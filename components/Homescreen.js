@@ -12,7 +12,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-ta
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 
 import { rpd, calculateIndividualScore, supplied } from "./Functions/Helper.js";
-var arrayofValues = []
+var arrayofValue = []
 export default class MainScreen extends Component {
   constructor(props) {
     super(props);
