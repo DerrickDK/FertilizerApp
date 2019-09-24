@@ -6,12 +6,13 @@
  */
 
 import React, { Component } from "react";
-import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity} from "react-native";
+import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} from "react-native";
 
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 
 import { rpd, calculateIndividualScore, supplied } from "./Functions/Helper.js";
+
 export default class MainScreen extends Component {
   constructor(props) {
     super(props);
@@ -388,6 +389,29 @@ export default class MainScreen extends Component {
        
       } 
     }
+    if(grade){
+      if(this.state.userDefineCheck == true){
+        this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
+        this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
+
+        this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
+        this.state.pValues = [this.state.pLabel, this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
+        
+        this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
+        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];   
+        
+        // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
+        // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
+        
+      
+        this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
+        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
+        
+        this.setState({
+          arrayofValue: this.state.arrayofValue1,
+        })
+      }
+    }
   }
 
   
@@ -404,7 +428,8 @@ export default class MainScreen extends Component {
       gradeTenChecked: false, 
       gradeFifteenChecked: false, 
       gradeZeroTenChecked: false,
-      gradeFiveChecked:false
+      gradeFiveChecked:false,
+      userDefineCheck: false,
     })
   }
   userDefineCheckFunction(){
@@ -429,9 +454,11 @@ export default class MainScreen extends Component {
         
         <ListItem style={styles.centerView}>
         
-        <CheckBox checked={state.userDefineCheck} onPress={() => {this.parseSelectedGrade(state.userInput); this.userDefineCheckFunction()}} />
+        <CheckBox checked={state.userDefineCheck} 
+        onPress={() => {this.setState({userDefineCheck: !this.state.userDefineCheck},
+        ()=>{this.parseSelectedGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} />
         <TextInput
-              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
               placeholder="Enter Grade"
               keyboardType="default"
               onChangeText={user => {
@@ -446,7 +473,7 @@ export default class MainScreen extends Component {
 
 
 
-                
+        
           <ListItem>
             <CheckBox checked = {state.gradeTenChecked} 
             onPress={() => {this.setState({gradeTenChecked: !this.state.gradeTenChecked},
@@ -510,6 +537,7 @@ export default class MainScreen extends Component {
               <Text> 9-23-30</Text>
             </Body>
           </ListItem>
+
         
 
 
@@ -554,7 +582,7 @@ export default class MainScreen extends Component {
 
       
             <Picker
-              enabled={!state.gradeTenChecked && !state.gradeFiveChecked && !state.gradeZeroTenChecked && !state.gradeFifteenChecked}
+              enabled={true}
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
               selectedValue={state.defaultUnits}
