@@ -37,8 +37,10 @@ export default class MainScreen extends Component {
       gradeFiveChecked: false,
       gradeFifteenChecked: false,
       userInput: null,
+      
       arrayofValue: [], 
       arrayofValue1: [],
+
       currentNValue: 60,
       currentPValue: 80,
       currentKValue: 100,
@@ -46,27 +48,29 @@ export default class MainScreen extends Component {
       caclulatedValue: [[0, 0, 0]],
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
       gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
-      calculatedValues: [[]],
+      
 
-      widthArr: [160, 215],
       defaultUnits: "Pounds-Square Feet",
       poundsOrOunces: "",
       sfOrAcres: "",
       tempFactor: 0,
       currentArea: 1000,
+
       nResult: 0,
       pResult: 0,
       kResult: 0,
+
       nArea: 0,
       pArea: 0,
       kArea: 0,
-      testString: "Hello",
-      testString2: "World",
+    
       selectedGrade: [],
       fullGrade: "",
+
       matchN: 0,
       matchP: 0,
       matchK: 0,
+
       suppliedNum1: 0,
       suppliedNum2: 0,
       suppliedNum3: 0,
@@ -78,6 +82,7 @@ export default class MainScreen extends Component {
       suppliedNum7: 0,
       suppliedNum8: 0,
       suppliedNum9: 0,
+
       score1: 0,
       score2: 0,
       score3: 0,
@@ -89,59 +94,9 @@ export default class MainScreen extends Component {
       nValues: null,
       pValues: null,
       kValues: null, 
-
-
-      // pValues1: null,
-      // kLabel1: null,
-      // kValues1: null,
-
-      // nlabel2: null,
-      // nValues2: null,
-      // pLabel2: null,
-      // pValues2: null,
-      // kLabel2: null,
-      // kValues2: null,
-
-      // nlabel3: null,
-      // nValues3: null,
-      // pLabel3: null,
-      // pValues3: null,
-      // kLabel3: null,
-      // kValues3: null,
-
-      // nlabel4: null,
-      // nValues4: null,
-      // pLabel4: null,
-      // pValues4: null,
-      // kLabel4: null,
-      // kValues4: null,
-
-      // valueArray: [["A", 10], ["B", 5], ["C", 8]],
-      // foo: 5,
-      // stay: true
     };
     
   }
-
-
-  /**
-   * 
-   * Not gonna use this sortArray cuz we don't know what it does.  
-   */
-  // sortArray() {
-  //   let tempArray = this.state.calculatedValues.sort(function(a, b) {
-  //     return b[6] - a[6];
-  //   });
-
-  //   let fooArray = this.state.valueArray.sort(function(a, b) {
-  //     return a[1] - b[1];
-  //   });
-  //   this.setState({
-  //     calculatedValues: tempArray,
-  //     valueArray: fooArray
-  //   });
-  // }
-
 
   //Update value of acre amount
   updateAcreValue(inputtedValue) {
@@ -160,10 +115,7 @@ export default class MainScreen extends Component {
     this.setState(
       {
         currentNValue: value
-      },
-      // () => {
-      //   this.parseSelectedGrade("10-10-10");
-      // }
+      }
     );
   }
 
@@ -172,10 +124,7 @@ export default class MainScreen extends Component {
     this.setState(
       {
         currentPValue: value
-      },
-      // () => {
-      //   this.parseSelectedGrade("10-10-10");
-      // }
+      }
     );
   }
 
@@ -184,10 +133,7 @@ export default class MainScreen extends Component {
     this.setState(
       {
         currentKValue: value
-      },
-      // () => {
-      //   this.parseSelectedGrade("10-10-10");
-      // }
+      }
     );
   }
 
@@ -243,9 +189,7 @@ export default class MainScreen extends Component {
     // }
 
 
-
     let matchN = gradeOne ? Math.ceil((this.state.currentNValue / gradeOne) * 100) : 0; // (60/10)*100
-
     let matchP = gradeTwo ? Math.ceil((this.state.currentPValue / gradeTwo) * 100) : 0;
     let matchK = gradeThree ? Math.ceil((this.state.currentKValue / gradeThree) * 100) : 0;
 
@@ -258,7 +202,6 @@ export default class MainScreen extends Component {
         matchK: matchK //gradeThree
       },
       () => {
-        this.calculateAcreValue();
         this.calculateScore(grade);
  
       }
@@ -341,8 +284,6 @@ export default class MainScreen extends Component {
       }
     }
 
-    
-
   
     if (grade == "10-10-10") {
       if (this.state.gradeTenChecked) {
@@ -367,21 +308,7 @@ export default class MainScreen extends Component {
           arrayofValue: this.state.arrayofValue1,
         })
     
-      } else if (this.state.gradeTenChecked == false) {
-
-        // this.state.nlabel = null;
-        // this.state.nValues = null;
-
-        // this.state.pLabel = null;
-        // this.state.pValues = null;
-
-        // this.state.kLabel = null;
-        // this.state.kValues = null;
-       this.clearValues()
-      
-  
-        
-      }
+      } 
     }
     if (grade == "5-5-5") {
       if (this.state.gradeFiveChecked) {
@@ -407,23 +334,7 @@ export default class MainScreen extends Component {
         })
        
 
-      } else if (this.state.gradeFiveChecked == false) {
-        // this.state.nlabel = null;
-        // this.state.nValues = null;
-
-        // this.state.pLabel = null;
-        // this.state.pValues = null;
-
-        // this.state.kLabel = null;
-        // this.state.kValues = null;
-        //  this.setState({
-        //   calculatedValues: null
-        // })
-        this.clearValues()
-      
-       
-        
-      }
+      } 
     }
     if (grade == "0-10-10") {
       if (this.state.gradeZeroTenChecked) {
@@ -449,24 +360,7 @@ export default class MainScreen extends Component {
         this.setState({
           arrayofValue: this.state.arrayofValue1,
         })
-    
-
-      } else if (this.state.gradeZeroTenChecked == false) {
-        //  this.state.nlabel = null;
-        // this.state.nValues = null;
-
-        // this.state.pLabel = null;
-        // this.state.pValues = null;
-
-        //  this.state.kLabel = null;
-        // this.state.kValues = null;
-        // this.setState({
-        //   calculatedValues: null
-        // })
-        this.clearValues()
-       
- 
-      }
+      } 
     }
 
     if (grade == "15-0-15") {
@@ -492,98 +386,26 @@ export default class MainScreen extends Component {
           arrayofValue: this.state.arrayofValue1,
         })
        
-      } else if (this.state.gradeFifteenChecked == false) {
-        // this.state.nlabel = null;
-        // this.state.nValues = null;
-        // this.state.pLabel = null;
-        // this.state.pValues = null;
-        // this.state.kLabel = null;
-        // this.state.kValues = null;
-        // this.setState({
-        //   calculatedValues: null
-        // })
-        this.clearValues()
-        
-
-      }
+      } 
     }
-
-    // this.setState({
-    //   //calculatedValues: [...this.state.calculatedValues, nlabel1, nValues1, pLabel1, pValues1, kLabel1, kValues1]
-    //   calculatedValues: [
-    //    //this.state.nlabel1,
-    //     this.state.nValues,
-
-    //   // this.state.pLabel1,
-    //     this.state.pValues,
-
-    //   // this.state.kLabel1,
-    //     this.state.kValues,
-
-    // //   // this.state.nlabel2,
-    // //     this.state.nValues2,
-
-    // //   // this.state.pLabel2,
-    // //     this.state.pValues2,
-
-    // //   // this.state.kLabel2,
-    // //     this.state.kValues2,
-
-    // //  //  this.state.nlabel3,
-    // //     this.state.nValues3,
-
-    // //   // this.state.pLabel3,
-    // //     this.state.pValues3,
-
-    // //   // this.state.kLabel3,
-    // //     this.state.kValues3,
-
-    // //   // this.state.nlabel4,
-    // //     this.state.nValues4,
-
-    // //   // this.state.pLabel4,
-    // //     this.state.pValues4,
-
-    // //    //this.state.kLabel4,
-    // //     this.state.kValues4
-    //   ].sort(function(a,b){return b[7]-a[7]})
-    // });
   }
 
   
 
-  clearValues() {
+  clearValues = ()=> {
     this.state.arrayofValue.length = 0
     // this.setState({
     //   calculatedValues: [[]]
     // });
   }
 
-  checkGradeTen() {
-    this.setState(
-      {
-      gradeTenChecked: !this.state.gradeTenChecked
-    },() => {this.parseSelectedGrade("10-10-10")}
-    )
-    
-  }
-
-  checkGradeFive() {
+  unCheckValues(){
     this.setState({
-      gradeFiveChecked: !this.state.gradeFiveChecked
-    });
-  }
-
-  checkZeroTen() {
-    this.setState({
-      gradeZeroTenChecked: !this.state.gradeZeroTenChecked
-    });
-  }
-
-  checkFifteen() {
-    this.setState({
-      gradeFifteenChecked: !this.state.gradeFifteenChecked //initially false. Once clicked, it becomes true, and once clicked again, it becomes false. 
-    });
+      gradeTenChecked: false, 
+      gradeFifteenChecked: false, 
+      gradeZeroTenChecked: false,
+      gradeFiveChecked:false
+    })
   }
   userDefineCheckFunction(){
     this.setState({
@@ -606,6 +428,7 @@ export default class MainScreen extends Component {
         
         
         <ListItem style={styles.centerView}>
+        
         <CheckBox checked={state.userDefineCheck} onPress={() => {this.parseSelectedGrade(state.userInput); this.userDefineCheckFunction()}} />
         <TextInput
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
@@ -614,7 +437,9 @@ export default class MainScreen extends Component {
               onChangeText={user => {
                 this.setState({userInput: user})
               }} />
-              <Button onPress={()=>{this.setState({gradeTenChecked: false, gradeFifteenChecked: false, gradeZeroTenChecked: false,gradeFiveChecked:false})}}>
+              <Button onPress={()=>{
+              this.clearValues(); this.unCheckValues();
+                 }}>
                 <Text> Clear All</Text>
               </Button>
             </ListItem>
@@ -623,11 +448,15 @@ export default class MainScreen extends Component {
 
                 
           <ListItem>
-            <CheckBox checked = {state.gradeTenChecked} onPress={() => {this.checkGradeTen()}} />
+            <CheckBox checked = {state.gradeTenChecked} 
+            onPress={() => {this.setState({gradeTenChecked: !this.state.gradeTenChecked},
+            ()=>{this.parseSelectedGrade("10-10-10"); if(this.state.gradeTenChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 10-10-10</Text>
             </Body>
-            <CheckBox checked={state.gradeFiveChecked} onPress={() => this.setState(this.parseSelectedGrade("5-5-5"), this.checkGradeFive())} />
+            <CheckBox checked={state.gradeFiveChecked} 
+            onPress={() => {this.setState({gradeFiveChecked: !this.state.gradeFiveChecked},
+              ()=>{this.parseSelectedGrade("5-5-5"); if(this.state.gradeFiveChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 5-5-5</Text>
             </Body>
@@ -641,11 +470,15 @@ export default class MainScreen extends Component {
             </Body>
           </ListItem>
           <ListItem>
-            <CheckBox checked={state.gradeZeroTenChecked} onPress={() => this.setState(this.parseSelectedGrade("0-10-10"), this.checkZeroTen())} />
+            <CheckBox checked={state.gradeZeroTenChecked} 
+            onPress={() => {this.setState({gradeZeroTenChecked: !this.state.gradeZeroTenChecked},
+              ()=>{this.parseSelectedGrade("0-10-10"); if(this.state.gradeZeroTenChecked == false){this.clearValues()}})}}/>
             <Body>
               <Text> 0-10-10</Text>
             </Body>
-            <CheckBox checked={state.gradeFifteenChecked} onPress={() => this.setState(this.parseSelectedGrade("15-0-15"), this.checkFifteen())} />
+            <CheckBox checked={state.gradeFifteenChecked} 
+            onPress={() => {this.setState({gradeFifteenChecked: !this.state.gradeFifteenChecked},
+              ()=>{this.parseSelectedGrade("15-0-15"); if(this.state.gradeFifteenChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 15-0-15</Text>
             </Body>
@@ -688,7 +521,7 @@ export default class MainScreen extends Component {
               keyboardType="numeric"
               placeholder="Enter N value"
               onChangeText={inputtedValue => {
-                this.updateNValue(inputtedValue), this.clearValues();
+                this.updateNValue(inputtedValue); this.clearValues(); this.unCheckValues();
               }}
             />
           </View>
@@ -701,7 +534,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter P value"
               onChangeText={inputtedValue => {
-                this.updatePValue(inputtedValue), this.clearValues();
+                this.updatePValue(inputtedValue); this.clearValues(); this.unCheckValues();
               }}
             />
           </View>
@@ -714,7 +547,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%'}}
               placeholder="Enter K value"
               onChangeText={inputtedValue => {
-                this.updateKValue(inputtedValue), this.clearValues();
+                this.updateKValue(inputtedValue); this.clearValues(); this.unCheckValues();
               }}
             />
           </View>
@@ -728,7 +561,7 @@ export default class MainScreen extends Component {
               placeholder={state.defaultUnits}
               onValueChange={value => {
                 this.setState({ defaultUnits: value }, () => {
-                  this.calculateAcreValue(), this.clearValues();
+                  this.calculateAcreValue(); this.clearValues(); this.unCheckValues();
                 });
               }}
             >
@@ -743,11 +576,12 @@ export default class MainScreen extends Component {
               placeholder="Enter value per acre"
               keyboardType="numeric"
               onChangeText={inputtedValue => {
-                this.updateAcreValue(inputtedValue);
+                this.updateAcreValue(inputtedValue); this.clearValues(); this.unCheckValues();
               }} />
 
 
           <View>
+            
             <Table>
               <Rows data={state.caclulatedValue} textStyle={styles.text} />
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
@@ -755,23 +589,20 @@ export default class MainScreen extends Component {
               <TableWrapper>
                 <Rows data={state.arrayofValue}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
               </TableWrapper>
-              {/* <TableWrapper>
-            <Rows data={state.gradeData} textStyle={styles.text} />
-            <Rows data={state.calculatedValues} textStyle={styles.text} />
-            </TableWrapper> */}
             </Table>
+
           </View>
         </Content>
         <Footer>
           <FooterTab>
             <Button>
-              <Icon name="apps" />
+              <Icon name="calculator" />
             </Button>
             <Button>
-              <Icon name="navigate"/>
+              <Icon name="pulse"/>
             </Button>
             <Button>
-              <Icon name="person" />
+              <Icon name="settings" />
             </Button>
           </FooterTab>
         </Footer>
