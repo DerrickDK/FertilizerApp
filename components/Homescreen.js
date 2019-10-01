@@ -11,7 +11,7 @@ import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} 
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 
-import { rpd, calculateIndividualScore, supplied } from "./Functions/Helper.js";
+import { rpd, calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 
 export default class MainScreen extends Component {
   constructor(props) {
@@ -160,16 +160,16 @@ export default class MainScreen extends Component {
       poundsOrOunces: poundsOrOunces,
       tempFactor: factor,
       sfOrAcres: sfOrAcres,
-      nResult: this.state.currentNValue / factor,
-      pResult: this.state.currentPValue / factor,
-      kResult: this.state.currentKValue / factor,
+      nResult: this.state.currentNValue / factor, //N 
+      pResult: this.state.currentPValue / factor, //P
+      kResult: this.state.currentKValue / factor, //K
 
       caclulatedValue: [[(this.state.currentNValue / factor).toFixed(2), (this.state.currentPValue / factor).toFixed(2), (this.state.currentKValue / factor).toFixed(2)]]
     });
   }
 
   //Gets values from selected grade
-  parseSelectedGrade(grade) {
+  parseGradeAndMatchGrade(grade) {
     /*
       Split the selected grades
       Ex: 10-10-10 will become
@@ -190,7 +190,7 @@ export default class MainScreen extends Component {
     // }
 
 
-    let matchN = gradeOne ? Math.ceil((this.state.currentNValue / gradeOne) * 100) : 0; // (60/10)*100
+    let matchN = gradeOne ? Math.ceil((this.state.currentNValue / gradeOne) * 100) : 0; // (60/10)*100 => 600
     let matchP = gradeTwo ? Math.ceil((this.state.currentPValue / gradeTwo) * 100) : 0;
     let matchK = gradeThree ? Math.ceil((this.state.currentKValue / gradeThree) * 100) : 0;
 
@@ -203,13 +203,13 @@ export default class MainScreen extends Component {
         matchK: matchK //gradeThree
       },
       () => {
-        this.calculateScore(grade);
+        this.calculateScore(grade); //use fullgrade to calculate score
  
       }
     );
   }
 
-  //Calculate values to calculate final score
+  //Score takes the full grade with (Ex 10-10-10)
   calculateScore(grade) {
     this.setState(
       {
@@ -237,9 +237,9 @@ export default class MainScreen extends Component {
     this.setState(
       {
         //score1 visual: 60,60,60, 60, 80, 100
-        score1: calculateIndividualScore(this.state.suppliedNum1, this.state.suppliedNum2, this.state.suppliedNum3, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue),
-        score2: calculateIndividualScore(this.state.suppliedNum4, this.state.suppliedNum5, this.state.suppliedNum6, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue),
-        score3: calculateIndividualScore(this.state.suppliedNum7, this.state.suppliedNum8, this.state.suppliedNum9, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue)
+        score1: calculateIndividualScore(this.state.suppliedNum1, this.state.suppliedNum2, this.state.suppliedNum3, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue), //score for all N
+        score2: calculateIndividualScore(this.state.suppliedNum4, this.state.suppliedNum5, this.state.suppliedNum6, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue), //score for all P
+        score3: calculateIndividualScore(this.state.suppliedNum7, this.state.suppliedNum8, this.state.suppliedNum9, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue) //score for all K
       },
       () => {
         this.calculateValues(grade);
@@ -251,9 +251,9 @@ export default class MainScreen extends Component {
 
   //Calculating values relating to each row of data and storing into array
   calculateValues(grade) {
-    let nResult = this.state.nResult;  //# 10
-    let pResult = this.state.pResult; //# 10
-    let kResult = this.state.kResult; //# 10
+    let nResult = this.state.nResult;  //# 60
+    let pResult = this.state.pResult; //# 80
+    let kResult = this.state.kResult; //# 100
 
     this.state.nArea = ((nResult / this.state.selectedGrade[0]) * 100).toFixed(2); //label1
     this.state.pArea = ((pResult / this.state.selectedGrade[1]) * 100).toFixed(2); //label2
@@ -456,7 +456,7 @@ export default class MainScreen extends Component {
         
         <CheckBox checked={state.userDefineCheck} 
         onPress={() => {this.setState({userDefineCheck: !this.state.userDefineCheck},
-        ()=>{this.parseSelectedGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} />
+        ()=>{this.parseGradeAndMatchGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} />
         <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
               placeholder="Enter Grade"
@@ -464,6 +464,9 @@ export default class MainScreen extends Component {
               onChangeText={user => {
                 this.setState({userInput: user})
               }} />
+              <Button onPress ={()=> alert(state.userInput)}>
+                <Text> Get</Text>
+              </Button>
               <Button onPress={()=>{
               this.clearValues(); this.unCheckValues();
                  }}>
@@ -477,13 +480,13 @@ export default class MainScreen extends Component {
           <ListItem>
             <CheckBox checked = {state.gradeTenChecked} 
             onPress={() => {this.setState({gradeTenChecked: !this.state.gradeTenChecked},
-            ()=>{this.parseSelectedGrade("10-10-10"); if(this.state.gradeTenChecked == false){this.clearValues()}})}} />
+            ()=>{this.parseGradeAndMatchGrade("10-10-10"); if(this.state.gradeTenChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 10-10-10</Text>
             </Body>
             <CheckBox checked={state.gradeFiveChecked} 
             onPress={() => {this.setState({gradeFiveChecked: !this.state.gradeFiveChecked},
-              ()=>{this.parseSelectedGrade("5-5-5"); if(this.state.gradeFiveChecked == false){this.clearValues()}})}} />
+              ()=>{this.parseGradeAndMatchGrade("5-5-5"); if(this.state.gradeFiveChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 5-5-5</Text>
             </Body>
@@ -499,13 +502,13 @@ export default class MainScreen extends Component {
           <ListItem>
             <CheckBox checked={state.gradeZeroTenChecked} 
             onPress={() => {this.setState({gradeZeroTenChecked: !this.state.gradeZeroTenChecked},
-              ()=>{this.parseSelectedGrade("0-10-10"); if(this.state.gradeZeroTenChecked == false){this.clearValues()}})}}/>
+              ()=>{this.parseGradeAndMatchGrade("0-10-10"); if(this.state.gradeZeroTenChecked == false){this.clearValues()}})}}/>
             <Body>
               <Text> 0-10-10</Text>
             </Body>
             <CheckBox checked={state.gradeFifteenChecked} 
             onPress={() => {this.setState({gradeFifteenChecked: !this.state.gradeFifteenChecked},
-              ()=>{this.parseSelectedGrade("15-0-15"); if(this.state.gradeFifteenChecked == false){this.clearValues()}})}} />
+              ()=>{this.parseGradeAndMatchGrade("15-0-15"); if(this.state.gradeFifteenChecked == false){this.clearValues()}})}} />
             <Body>
               <Text> 15-0-15</Text>
             </Body>
