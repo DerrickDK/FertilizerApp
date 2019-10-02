@@ -10,9 +10,12 @@ import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} 
 
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
-
 import { rpd, calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 
+const grades = []
+var gradesParsed = []
+const solutions = []
+const results = []
 export default class MainScreen extends Component {
   constructor(props) {
     super(props);
@@ -158,7 +161,6 @@ export default class MainScreen extends Component {
 
     this.setState({
       poundsOrOunces: poundsOrOunces,
-      tempFactor: factor,
       sfOrAcres: sfOrAcres,
       nResult: this.state.currentNValue / factor, //N 
       pResult: this.state.currentPValue / factor, //P
@@ -168,8 +170,15 @@ export default class MainScreen extends Component {
     });
   }
 
+  parseMe(grade){
+    grade.forEach(element => {gradesParsed.push(element.split('-'))})
+
+  }
+
   //Gets values from selected grade
   parseGradeAndMatchGrade(grade) {
+    
+
     /*
       Split the selected grades
       Ex: 10-10-10 will become
@@ -182,6 +191,8 @@ export default class MainScreen extends Component {
     let gradeOne = (+this.state.selectedGrade[0]);
     let gradeTwo = (+this.state.selectedGrade[1]);
     let gradeThree = (+this.state.selectedGrade[2]);
+
+
 
     // let testIF = () => {
     //   if(gradeOne) {
@@ -311,117 +322,10 @@ export default class MainScreen extends Component {
     
       } 
     }
-    if (grade == "5-5-5") {
-      if (this.state.gradeFiveChecked) {
-
-        this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
-
-        this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.pValues = [this.state.pLabel, this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
-
-        this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];
-        
-        // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-
-    
-        this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
-        
-        this.setState({
-          arrayofValue: this.state.arrayofValue1,
-        })
-       
-
-      } 
-    }
-    if (grade == "0-10-10") {
-      if (this.state.gradeZeroTenChecked) {
-
-        NSD2 = 0 - nResult;
-        NSD3 = 0 - nResult;
-        let zero = 0;
-        this.state.nlabel = ["null"];
-        this.state.nValues = [this.state.nlabel, 0,0, 0, 0, 0, 0, 0]
-
-        this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.pValues = [this.state.pLabel, zero.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
-
-        this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.kValues = [this.state.kLabel, zero.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];
-        
-        
-        // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-        this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
-        
-        this.setState({
-          arrayofValue: this.state.arrayofValue1,
-        })
-      } 
-    }
-
-    if (grade == "15-0-15") {
-      PSD1 = 0 - pResult;
-      PSD3 = 0 - pResult;
-      if (this.state.gradeFifteenChecked) { //when check is true
-        let zero = 0;
-        this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), zero.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
-        this.state.pLabel = ["null"];
-        this.state.pValues =[this.state.pLabel, 0,0, 0, 0, 0, 0, 0]
-        this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), zero.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];
-        
-        
-        // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-
-        this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
-        
-        this.setState({
-          arrayofValue: this.state.arrayofValue1,
-        })
-       
-      } 
-    }
-    if(grade){
-      if(this.state.userDefineCheck == true){
-        this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
-
-        this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.pValues = [this.state.pLabel, this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
-        
-        this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];   
-        
-        // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-        
-      
-        this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
-        
-        this.setState({
-          arrayofValue: this.state.arrayofValue1,
-        })
-      }
-    }
   }
 
   
 
-  clearValues = ()=> {
-    this.state.arrayofValue.length = 0
-    // this.setState({
-    //   calculatedValues: [[]]
-    // });
-  }
 
   unCheckValues(){
     this.setState({
@@ -440,16 +344,15 @@ export default class MainScreen extends Component {
 
   render() {
     const state = this.state;
- 
-
+  
     return (
       <Container>
         <Content>
-        <Header>
+        {/* <Header>
           <Body>
             <Title>Fertilizer Calculator</Title>
           </Body>
-        </Header>
+        </Header> */}
         
         
         <ListItem style={styles.centerView}>
@@ -461,17 +364,14 @@ export default class MainScreen extends Component {
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
               placeholder="Enter Grade"
               keyboardType="default"
+              multiline = {true}
               onChangeText={user => {
                 this.setState({userInput: user})
               }} />
-              <Button onPress ={()=> alert(state.userInput)}>
+              <Button onPress ={()=> alert(helloWorld)}>
                 <Text> Get</Text>
               </Button>
-              <Button onPress={()=>{
-              this.clearValues(); this.unCheckValues();
-                 }}>
-                <Text> Clear All</Text>
-              </Button>
+            
             </ListItem>
 
 
@@ -480,66 +380,13 @@ export default class MainScreen extends Component {
           <ListItem>
             <CheckBox checked = {state.gradeTenChecked} 
             onPress={() => {this.setState({gradeTenChecked: !this.state.gradeTenChecked},
-            ()=>{this.parseGradeAndMatchGrade("10-10-10"); if(this.state.gradeTenChecked == false){this.clearValues()}})}} />
+            ()=>{this.parseGradeAndMatchGrade("10-10-10");})}} />
             <Body>
               <Text> 10-10-10</Text>
             </Body>
-            <CheckBox checked={state.gradeFiveChecked} 
-            onPress={() => {this.setState({gradeFiveChecked: !this.state.gradeFiveChecked},
-              ()=>{this.parseGradeAndMatchGrade("5-5-5"); if(this.state.gradeFiveChecked == false){this.clearValues()}})}} />
-            <Body>
-              <Text> 5-5-5</Text>
-            </Body>
-            <CheckBox  />
-            <Body>
-              <Text> 29-0-5</Text>
-            </Body>
-            <CheckBox  />
-            <Body>
-              <Text> 7-3-3 </Text>
-            </Body>
-          </ListItem>
-          <ListItem>
-            <CheckBox checked={state.gradeZeroTenChecked} 
-            onPress={() => {this.setState({gradeZeroTenChecked: !this.state.gradeZeroTenChecked},
-              ()=>{this.parseGradeAndMatchGrade("0-10-10"); if(this.state.gradeZeroTenChecked == false){this.clearValues()}})}}/>
-            <Body>
-              <Text> 0-10-10</Text>
-            </Body>
-            <CheckBox checked={state.gradeFifteenChecked} 
-            onPress={() => {this.setState({gradeFifteenChecked: !this.state.gradeFifteenChecked},
-              ()=>{this.parseGradeAndMatchGrade("15-0-15"); if(this.state.gradeFifteenChecked == false){this.clearValues()}})}} />
-            <Body>
-              <Text> 15-0-15</Text>
-            </Body>
-            <CheckBox />
-            <Body>
-              <Text> 13-0-0</Text>
-            </Body>
-            <CheckBox  />
-            <Body>
-              <Text> 3-4-2</Text>
-            </Body>
           </ListItem>
           
-          <ListItem>
-            <CheckBox />
-            <Body>
-              <Text> 14-7-7</Text>
-            </Body>
-            <CheckBox />
-            <Body>
-              <Text> 5-6-3</Text>
-            </Body>
-            <CheckBox  />
-            <Body>
-              <Text> 4-6-2</Text>
-            </Body>
-            <CheckBox  />
-            <Body>
-              <Text> 9-23-30</Text>
-            </Body>
-          </ListItem>
+        
 
         
 
@@ -552,7 +399,7 @@ export default class MainScreen extends Component {
               keyboardType="numeric"
               placeholder="Enter N value"
               onChangeText={inputtedValue => {
-                this.updateNValue(inputtedValue); this.clearValues(); this.unCheckValues();
+                this.updateNValue(inputtedValue);
               }}
             />
           </View>
@@ -565,7 +412,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter P value"
               onChangeText={inputtedValue => {
-                this.updatePValue(inputtedValue); this.clearValues(); this.unCheckValues();
+                this.updatePValue(inputtedValue); 
               }}
             />
           </View>
@@ -578,7 +425,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%'}}
               placeholder="Enter K value"
               onChangeText={inputtedValue => {
-                this.updateKValue(inputtedValue); this.clearValues(); this.unCheckValues();
+                this.updateKValue(inputtedValue); 
               }}
             />
           </View>
@@ -592,7 +439,7 @@ export default class MainScreen extends Component {
               placeholder={state.defaultUnits}
               onValueChange={value => {
                 this.setState({ defaultUnits: value }, () => {
-                  this.calculateAcreValue(); this.clearValues(); this.unCheckValues();
+                  this.calculateAcreValue(); 
                 });
               }}
             >
@@ -607,24 +454,26 @@ export default class MainScreen extends Component {
               placeholder="Enter value per acre"
               keyboardType="numeric"
               onChangeText={inputtedValue => {
-                this.updateAcreValue(inputtedValue); this.clearValues(); this.unCheckValues();
+                this.updateAcreValue(inputtedValue); 
               }} />
 
 
-          <View>
+          {/* <View>
             
             <Table>
               <Rows data={state.caclulatedValue} textStyle={styles.text} />
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
+              <TableWrapper>
               <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
+              </TableWrapper>
               <TableWrapper>
                 <Rows data={state.arrayofValue}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
               </TableWrapper>
             </Table>
 
-          </View>
+          </View> */}
         </Content>
-        <Footer>
+        {/* <Footer>
           <FooterTab>
             <Button>
               <Icon name="calculator" />
@@ -636,7 +485,7 @@ export default class MainScreen extends Component {
               <Icon name="settings" />
             </Button>
           </FooterTab>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }
