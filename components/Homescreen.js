@@ -17,6 +17,9 @@ var gradesParsed = []
 const solutions = []
 const results = []
 export default class MainScreen extends Component {
+  static navigationOptions = {
+    title: "Input Screen"
+  }
   constructor(props) {
     super(props);
   

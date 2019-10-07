@@ -11,7 +11,9 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-ta
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 
 export default class SecondScreen extends Component {
-  
+  static navigationOptions = {
+    title: "Output Screen"
+  }
   constructor(props) {
     super(props);
     const Nutrients2 = 

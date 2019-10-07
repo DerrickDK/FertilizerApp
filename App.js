@@ -3,11 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import MainScreen from './components/Homescreen'
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import SecondScreen from './components/Secondscreen'
 import ContainerApp from './components/index'
 
 
 export default class App extends React.Component {
+ 
   constructor(props) {
     super(props);
     this.state = {
