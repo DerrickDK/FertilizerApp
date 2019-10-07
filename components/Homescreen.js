@@ -18,7 +18,8 @@ const solutions = []
 const results = []
 export default class MainScreen extends Component {
   static navigationOptions = {
-    title: "Input Screen"
+   title: "Input Screen",
+  //  header: null
   }
   constructor(props) {
     super(props);
@@ -476,19 +477,16 @@ export default class MainScreen extends Component {
 
           </View> */}
         </Content>
-        {/* <Footer>
+        <Footer>
           <FooterTab>
             <Button>
               <Icon name="calculator" />
             </Button>
             <Button>
-              <Icon name="pulse"/>
-            </Button>
-            <Button>
-              <Icon name="settings" />
+              <Icon name="pulse" onPress = {() => this.props.navigation.navigate("SecondScreen")}/>
             </Button>
           </FooterTab>
-        </Footer> */}
+        </Footer>
       </Container>
     );
   }

@@ -32,6 +32,6 @@ const App = createBottomTabNavigator({
 
 
 //finalize everything for the container
-const ContainerApp = createAppContainer(App);
+const ContainerApp = createAppContainer(RootStack);
 
 export default ContainerApp; //export container component to be used in App.js
