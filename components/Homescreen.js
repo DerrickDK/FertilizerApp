@@ -483,7 +483,8 @@ export default class MainScreen extends Component {
               <Icon name="calculator" />
             </Button>
             <Button>
-              <Icon name="pulse" onPress = {() => this.props.navigation.navigate("SecondScreen")}/>
+              <Icon name="pulse" onPress = {
+                () => this.props.navigation.navigate("SecondScreen", {arrayofValue: state.arrayofValue, caclulatedValue: state.caclulatedValue})}/>
             </Button>
           </FooterTab>
         </Footer>
