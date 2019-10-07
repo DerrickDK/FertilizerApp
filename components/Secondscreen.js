@@ -50,9 +50,7 @@ export default class SecondScreen extends Component {
             <Title>Second Home</Title>
           </Body>
         </Header> */}
-        <View>
-          <Text>HI {state.currentNValue}</Text>
-            
+        <View>            
             <Table>
               <Rows data={state.caclulatedValue} textStyle={styles.text} />
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />

@@ -6,57 +6,55 @@
  */
 
 import React, { Component } from "react";
-import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} from "react-native";
+import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 import { rpd, calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 
 const grades = []
-var gradesParsed = []
+const gradesInArray = []
+const gradesParsed = []
 const solutions = []
 const results = []
 export default class MainScreen extends Component {
   static navigationOptions = {
-   title: "Input Screen",
-  //  header: null
+    title: "Input Screen",
+    //  header: null
   }
   constructor(props) {
     super(props);
-  
-    const Nutrients2 = 
+
+    const Nutrients2 =
       (
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-        <Text style={{ color: 'blue' }}>Surplus</Text>
-        <Text style={{ color: 'red' }}>Deficit</Text>
-        <Text style={{ color: 'green' }}> Balance </Text>
-      </View>
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+          <Text style={{ color: 'blue' }}>Surplus</Text>
+          <Text style={{ color: 'red' }}>Deficit</Text>
+          <Text style={{ color: 'green' }}> Balance </Text>
+        </View>
       )
-    const Nutrients1 = 
+    const Nutrients1 =
       (
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-        <Text> Nutrients Supplied</Text>
-      </View>
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <Text> Nutrients Supplied</Text>
+        </View>
       )
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
       userDefineCheck: false,
       gradeTenChecked: false,
-      gradeZeroTenChecked: false,
-      gradeFiveChecked: false,
-      gradeFifteenChecked: false,
       userInput: null,
-      
-      arrayofValue: [], 
+
+      arrayofValue: [],
       arrayofValue1: [],
 
       currentNValue: 60,
       currentPValue: 80,
       currentKValue: 100,
-     
+
       caclulatedValue: [[0, 0, 0]],
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
-      gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
-      
+      gradeData: [["Recommendation", "N", "P", "K", "N", "P", "K", "Score"]],
+
 
       defaultUnits: "Pounds-Square Feet",
       poundsOrOunces: "",
@@ -71,7 +69,7 @@ export default class MainScreen extends Component {
       nArea: 0,
       pArea: 0,
       kArea: 0,
-    
+
       selectedGrade: [],
       fullGrade: "",
 
@@ -96,14 +94,14 @@ export default class MainScreen extends Component {
       score3: 0,
 
       nlabel: null,
-      kLabel: null, 
+      kLabel: null,
       pLabel: null,
 
       nValues: null,
       pValues: null,
-      kValues: null, 
+      kValues: null,
     };
-    
+
   }
 
   //Update value of acre amount
@@ -174,14 +172,15 @@ export default class MainScreen extends Component {
     });
   }
 
-  parseMe(grade){
-    grade.forEach(element => {gradesParsed.push(element.split('-'))})
+  parseMe(grade) {
+    grade[0].forEach(element => {gradesParsed.push(element.split('-'))})
+    alert(gradesParsed.length)
 
   }
 
   //Gets values from selected grade
   parseGradeAndMatchGrade(grade) {
-    
+
 
     /*
       Split the selected grades
@@ -219,7 +218,7 @@ export default class MainScreen extends Component {
       },
       () => {
         this.calculateScore(grade); //use fullgrade to calculate score
- 
+
       }
     );
   }
@@ -300,47 +299,47 @@ export default class MainScreen extends Component {
       }
     }
 
-  
+
     if (grade == "10-10-10") {
       if (this.state.gradeTenChecked) {
-    
+
         this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
         this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
 
         this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
         this.state.pValues = [this.state.pLabel, this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
-        
+
         this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];   
-        
+        this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];
+
         // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
         // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-        
-      
+
+
         this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-        this.state.arrayofValue1.sort(function(a,b){return b[7]-a[7]})
-        
+        this.state.arrayofValue1.sort(function (a, b) { return b[7] - a[7] })
+
         this.setState({
           arrayofValue: this.state.arrayofValue1,
         })
-    
-      } 
+
+      }
     }
   }
 
-  
 
 
-  unCheckValues(){
+
+  unCheckValues() {
     this.setState({
-      gradeTenChecked: false, 
-      gradeFifteenChecked: false, 
+      gradeTenChecked: false,
+      gradeFifteenChecked: false,
       gradeZeroTenChecked: false,
-      gradeFiveChecked:false,
+      gradeFiveChecked: false,
       userDefineCheck: false,
     })
   }
-  userDefineCheckFunction(){
+  userDefineCheckFunction() {
     this.setState({
       userDefineCheck: !this.state.userDefineCheck
     });
@@ -348,55 +347,59 @@ export default class MainScreen extends Component {
 
   render() {
     const state = this.state;
-  
+
     return (
       <Container>
         <Content>
-        {/* <Header>
+          {/* <Header>
           <Body>
             <Title>Fertilizer Calculator</Title>
           </Body>
         </Header> */}
-        
-        
-        <ListItem style={styles.centerView}>
-        
-        <CheckBox checked={state.userDefineCheck} 
+
+
+          <ListItem style={styles.centerView}>
+
+            {/* <CheckBox checked={state.userDefineCheck} 
         onPress={() => {this.setState({userDefineCheck: !this.state.userDefineCheck},
-        ()=>{this.parseGradeAndMatchGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} />
-        <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center"}}
-              placeholder="Enter Grade"
+        ()=>{this.parseGradeAndMatchGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} /> */}
+            <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
+              placeholder="Enter Grades"
               keyboardType="default"
-              multiline = {true}
+              multiline={true}
               onChangeText={user => {
-                this.setState({userInput: user})
-              }} />
-              <Button onPress ={()=> alert(helloWorld)}>
-                <Text> Get</Text>
-              </Button>
-            
-            </ListItem>
+                this.setState({ userInput: user.trim().split(/\s+/) })
+              }}
+              />
+              
+            <Button onPress={()=>{grades.push(state.userInput); this.parseMe(grades)}}>
+              <Text> Submit</Text>
+            </Button>
+
+          </ListItem>
 
 
 
-        
+
           <ListItem>
-            <CheckBox checked = {state.gradeTenChecked} 
-            onPress={() => {this.setState({gradeTenChecked: !this.state.gradeTenChecked},
-            ()=>{this.parseGradeAndMatchGrade("10-10-10");})}} />
+            <CheckBox checked={state.gradeTenChecked}
+              onPress={() => {
+                this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
+                  () => { this.parseGradeAndMatchGrade("10-10-10"); })
+              }} />
             <Body>
               <Text> 10-10-10</Text>
             </Body>
           </ListItem>
-          
-        
 
-        
+
+
+
 
 
           <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20}}> N: </Text>
+            <Text style={{ fontSize: 20 }}> N: </Text>
             <TextInput
               editable={true}
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
@@ -409,73 +412,58 @@ export default class MainScreen extends Component {
           </View>
 
           <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20}}> P: </Text>
+            <Text style={{ fontSize: 20 }}> P: </Text>
             <TextInput
               editable={true}
               keyboardType="numeric"
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter P value"
               onChangeText={inputtedValue => {
-                this.updatePValue(inputtedValue); 
+                this.updatePValue(inputtedValue);
               }}
             />
           </View>
 
           <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20}}> K: </Text>
+            <Text style={{ fontSize: 20 }}> K: </Text>
             <TextInput
               editable={true}
               keyboardType="numeric"
-              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%'}}
+              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter K value"
               onChangeText={inputtedValue => {
-                this.updateKValue(inputtedValue); 
+                this.updateKValue(inputtedValue);
               }}
             />
           </View>
 
-      
-            <Picker
-              enabled={true}
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              selectedValue={state.defaultUnits}
-              placeholder={state.defaultUnits}
-              onValueChange={value => {
-                this.setState({ defaultUnits: value }, () => {
-                  this.calculateAcreValue(); 
-                });
-              }}
-            >
-              <Picker.Item label="Pounds - Square Feet" value="Pounds-Square Feet" />
-              <Picker.Item label="Pounds - Acre" value="Pounds-Acre" />
-              <Picker.Item label="Ounces - Square Feet" value="Ounces-Square Feet" />
-              <Picker.Item label="Ounces - Acre" value="Ounces-Acre" />
-            </Picker>
 
-            <TextInput
-              style={{ fontSize: 20, height: 50, textAlign: "center", borderBottomColor: "#42bcf5", borderBottomWidth: 1 }}
-              placeholder="Enter value per acre"
-              keyboardType="numeric"
-              onChangeText={inputtedValue => {
-                this.updateAcreValue(inputtedValue); 
-              }} />
+          <Picker
+            enabled={true}
+            mode="dropdown"
+            iosIcon={<Icon name="arrow-down" />}
+            selectedValue={state.defaultUnits}
+            placeholder={state.defaultUnits}
+            onValueChange={value => {
+              this.setState({ defaultUnits: value }, () => {
+                this.calculateAcreValue();
+              });
+            }}
+          >
+            <Picker.Item label="Pounds - Square Feet" value="Pounds-Square Feet" />
+            <Picker.Item label="Pounds - Acre" value="Pounds-Acre" />
+            <Picker.Item label="Ounces - Square Feet" value="Ounces-Square Feet" />
+            <Picker.Item label="Ounces - Acre" value="Ounces-Acre" />
+          </Picker>
 
-
-          {/* <View>
+          <TextInput
+            style={{ fontSize: 20, height: 50, textAlign: "center", borderBottomColor: "#42bcf5", borderBottomWidth: 1 }}
+            placeholder="Enter value per acre"
+            keyboardType="numeric"
+            onChangeText={inputtedValue => {
+              this.updateAcreValue(inputtedValue);
+            }} />
             
-            <Table>
-              <Rows data={state.caclulatedValue} textStyle={styles.text} />
-              <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
-              <TableWrapper>
-              <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
-              </TableWrapper>
-              <TableWrapper>
-                <Rows data={state.arrayofValue}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
-              </TableWrapper>
-            </Table>
-
-          </View> */}
         </Content>
         <Footer>
           <FooterTab>
@@ -483,8 +471,8 @@ export default class MainScreen extends Component {
               <Icon name="calculator" />
             </Button>
             <Button>
-              <Icon name="pulse" onPress = {
-                () => this.props.navigation.navigate("SecondScreen", {arrayofValue: state.arrayofValue, caclulatedValue: state.caclulatedValue})}/>
+              <Icon name="pulse" onPress={
+                () => this.props.navigation.navigate("SecondScreen", { arrayofValue: state.arrayofValue, caclulatedValue: state.caclulatedValue })} />
             </Button>
           </FooterTab>
         </Footer>
