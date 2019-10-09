@@ -31,7 +31,6 @@ export default class SecondScreen extends Component {
       </View>
       )
     this.state = {
-      caclulatedValue: this.props.navigation.state.params.caclulatedValue,
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
       gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
@@ -52,7 +51,6 @@ export default class SecondScreen extends Component {
         </Header> */}
         <View>            
             <Table>
-              <Rows data={state.caclulatedValue} textStyle={styles.text} />
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
               <TableWrapper>
               <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
