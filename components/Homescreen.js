@@ -12,9 +12,6 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-ta
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 import { calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 
-var grades = []
-var gradesParsed = []
-var solutions = [] //this should be the output for the Rows array
 
 export default class MainScreen extends Component {
   static navigationOptions = {
@@ -31,6 +28,7 @@ export default class MainScreen extends Component {
 
       arrayofValue: [],
       arrayofValue1: [],
+      result: [],
 
       currentNValue: 0,
       currentPValue: 0,
@@ -305,7 +303,6 @@ export default class MainScreen extends Component {
     if (poundsOrOunces == "Pounds" && sfOrAcres == "Square Feet") {
       factor = 43560 / +this.state.currentArea;
 
-
     } else if (poundsOrOunces == "Pounds" && sfOrAcres == "Acre") {
       factor = 1 / +this.state.currentArea;
 
@@ -332,7 +329,12 @@ export default class MainScreen extends Component {
   }
 
   parseMe = (grade) => {
-    let factor = ((this.state.poundsOrOunces == 'pounds' ? 1 : 1 / 16) * (this.state.sfOrAcres == 'acre' ? 1 : 43560) / this.state.currentArea),
+    let gradesParsed = []
+    grade[0].forEach(element => {
+      gradesParsed.push(element.split('-'))
+      
+    })
+    let factor = 0,
       num = {
         N: 0,
         P: 1,
@@ -344,11 +346,34 @@ export default class MainScreen extends Component {
         K: this.state.currentKValue,
       },
       unit = this.state.poundsOrOunces,
-      area = this.state.currentArea + " " + this.state.sfOrAcres
+      sfoA = this.state.sfOrAcres,
+      solutions = [],
+      label ="Recommendation"
+      N = 0,
+      P = 0,
+      K = 0,
+      N1 = 0,
+      P1 = 0,
+      K1 = 0,
+      score = 0,
+      area = this.state.currentArea + " " + sfoA
 
-    grade[0].forEach(element => {
-      gradesParsed.push(element.split('-'))
-    })
+    if (unit == "Pounds" && sfoA == "Square Feet") {
+      factor = 43560 / +this.state.currentArea;
+
+    } else if (unit == "Pounds" && sfoA == "Acre") {
+      factor = 1 / +this.state.currentArea;
+
+
+    } else if (unit == "Ounces" && sfoA == "Square Feet") {
+      factor = (0.0625 * 43560) / this.state.currentArea;
+
+    } else if (unit == "Ounces" && sfoA == "Acre") {
+      factor = 0.0625 / this.state.currentArea;
+
+    } else {
+      factor = "Error";
+    }
 
     const solve = (matrix, freeTerms) => { //function works
       if (matrix.length == 1) {
@@ -372,10 +397,10 @@ export default class MainScreen extends Component {
         return [x, y, z];
       }
     } // solve
-    const rpd = (v1, v2) => {
+    const rpd = (v1, v2) => { //function works
       return Math.abs(v1 - v2) / ((+v1 + +v2) / 2);
     };
-    const calcScore = (sn, sp, sk) => {
+    const calcScore = (sn, sp, sk) => { //function works
       let sc;
 
       if (sn + sp + sk == 0) {
@@ -411,7 +436,7 @@ export default class MainScreen extends Component {
     } // calcSore
 
     const match = (parms, grades) => {
-      console.log(parms) //works
+    // console.log(parms) //works
       let supplied = {
         N: 0,
         P: 0,
@@ -425,15 +450,16 @@ export default class MainScreen extends Component {
         terms = parms.map(parm => rec[parm]),
         matrix = parms.map((parm, i) => grades.map((grade, j) => grades[j][num[parm]])),
         cr = solve(matrix, terms);
-      console.log("CR: " + cr) //works
-      console.log("TERMS: " + terms) //works
-      console.log("UNIT: " + unit) //works
-      console.log("AREA: " + area) //works
+
+      // console.log("CR: " + cr) //works
+      // console.log("TERMS: " + terms) //works
+      // console.log("UNIT: " + unit) //works
+      // console.log("AREA: " + area) //works
 
 
-      console.log("N value: " + rec.N) //works
-      console.log("P value: " + rec.P) //works
-      console.log("K value: " + rec.K) //works
+      // console.log("N value: " + rec.N) //works
+      // console.log("P value: " + rec.P) //works
+      // console.log("K value: " + rec.K) //works
 
       if (cr.every(e => e >= 0 && e < Infinity)) {
         cr.forEach((amt, i) => {
@@ -441,8 +467,24 @@ export default class MainScreen extends Component {
           supplied.P += amt * grades[i][1]; //P
           supplied.K += amt * grades[i][2]; //K
         });
-        let score = calcScore(supplied.N, supplied.P, supplied.K);
-        console.log("This is my score: "+score)
+        
+        score = calcScore(supplied.N, supplied.P, supplied.K)
+        label = "Recommendation"
+        N1 = (supplied.N / factor).toFixed(2)
+        P1 = (supplied.P / factor).toFixed(2)
+        K1 = (supplied.K / factor).toFixed(2)
+        N = ((supplied.N - rec.N)/ factor).toFixed(2)
+        P = ((supplied.P - rec.P)/ factor).toFixed(2)
+        K = ((supplied.K - rec.K) / factor).toFixed(2)
+
+        solutions.push(label, N1, P1, K1, N, P, K, score)
+        console.log("SOLUTION: "+JSON.stringify(solutions))
+
+        
+        console.log("This is my score: "+score) //works
+        console.log("num:"+ N) //works
+        console.log("num: "+P) //works
+        console.log("num: "+K) //works
 
       }
       console.log("Supplied N: " + supplied.N) //works
@@ -450,24 +492,24 @@ export default class MainScreen extends Component {
       console.log("Supplied K: " + supplied.K) //works
     } // match
 
-    console.log("my grades: " + gradesParsed) //works
-    console.log("my grades length: " + gradesParsed.length) //works
+    // console.log("my grades: " + gradesParsed) //works
+    // console.log("my grades length: " + gradesParsed.length) //works
     console.log(JSON.stringify(gradesParsed)) //works
 
     for (let i = 0; i < gradesParsed.length; i++) {
-      console.log("first loop: " + gradesParsed[i])//works
+      //console.log("first loop: " + gradesParsed[i])//works
       match(['N'], [gradesParsed[i]]);
       match(['P'], [gradesParsed[i]]);
       match(['K'], [gradesParsed[i]]);
 
       for (let j = i + 1; j < gradesParsed.length; j++) {
-        console.log("second loop" + gradesParsed[j]) //works
+       // console.log("second loop" + gradesParsed[j]) //works
         match(['N', 'P'], [gradesParsed[i], gradesParsed[j]]);
         match(['N', 'K'], [gradesParsed[i], gradesParsed[j]]);
         match(['P', 'K'], [gradesParsed[i], gradesParsed[j]]);
 
         for (let k = j + 1; k < gradesParsed.length; k++) {
-          console.log("third loop" + gradesParsed[k]) //works
+          //console.log("third loop" + gradesParsed[k]) //works
           match(['N', 'P', 'K'], [gradesParsed[i], gradesParsed[j], gradesParsed[k]]);
         }
       }
@@ -478,6 +520,7 @@ export default class MainScreen extends Component {
 
   render() {
     const state = this.state;
+  
 
     return (
       <Container>
@@ -504,7 +547,10 @@ export default class MainScreen extends Component {
               }}
             />
 
-            <Button onPress={() => { grades.push(state.userInput); this.parseMe(grades) }}>
+            <Button onPress={() => { 
+              let grades = []
+              grades.push(state.userInput); this.parseMe(grades) 
+            }}>
               <Text> Submit</Text>
             </Button>
 

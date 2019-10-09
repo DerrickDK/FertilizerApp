@@ -35,6 +35,7 @@ export default class SecondScreen extends Component {
       gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
       arrayofValue: this.props.navigation.state.params.arrayofValue,
+      
 
     }
   }
@@ -62,22 +63,6 @@ export default class SecondScreen extends Component {
 
           </View>
         </Content>
-        {/* <Footer>
-          <FooterTab>
-            <Button>
-              <Icon name="apps" />
-            </Button>
-            <Button>
-              <Icon name="camera" />
-            </Button>
-            <Button>
-              <Icon name="navigate" />
-            </Button>
-            <Button>
-              <Icon name="person" />
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container>
     );
   }
