@@ -12,11 +12,10 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-ta
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 import { rpd, calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 
-const grades = []
-const gradesInArray = []
-const gradesParsed = []
-const solutions = []
-const results = []
+var grades = []
+var gradesParsed = []
+var solutions = [] //this should be the output for the Rows array
+
 export default class MainScreen extends Component {
   static navigationOptions = {
     title: "Input Screen",
@@ -25,20 +24,6 @@ export default class MainScreen extends Component {
   constructor(props) {
     super(props);
 
-    const Nutrients2 =
-      (
-        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-          <Text style={{ color: 'blue' }}>Surplus</Text>
-          <Text style={{ color: 'red' }}>Deficit</Text>
-          <Text style={{ color: 'green' }}> Balance </Text>
-        </View>
-      )
-    const Nutrients1 =
-      (
-        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-          <Text> Nutrients Supplied</Text>
-        </View>
-      )
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
       userDefineCheck: false,
       gradeTenChecked: false,
@@ -52,9 +37,6 @@ export default class MainScreen extends Component {
       currentKValue: 100,
 
       caclulatedValue: [[0, 0, 0]],
-      nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
-      gradeData: [["Recommendation", "N", "P", "K", "N", "P", "K", "Score"]],
-
 
       defaultUnits: "Pounds-Square Feet",
       poundsOrOunces: "",
@@ -172,11 +154,93 @@ export default class MainScreen extends Component {
     });
   }
 
-  parseMe(grade) {
-    grade[0].forEach(element => {gradesParsed.push(element.split('-'))})
-    alert(gradesParsed.length)
 
-  }
+
+  parseMe = (grade) => {
+    grade[0].forEach(element => {
+      gradesParsed.push(element.split('-'))
+    })  
+
+    const solve = (matrix, freeTerms) => {
+      if (matrix.length == 1) {
+        return [freeTerms[0] / matrix[0]];
+      } else if (matrix.length == 2) {
+        let [[a1, b1], [a2, b2]] = matrix,
+          [c1, c2] = freeTerms,
+          D = a1 * b2 - b1 * a2,
+          x = (c1 * b2 - b1 * c2) / D,
+          y = (a1 * c2 - c1 * a2) / D;
+  
+        return [x, y];
+      } else if (matrix.length == 3) {
+        let [[a, b, c], [l, m, n], [p, q, r]] = matrix,
+          [d, k, s] = freeTerms.map(v => -v),
+          D = (a * m * r + b * p * n + c * l * q) - (a * n * q + b * l * r + c * m * p),
+          x = ((b * r * k + c * m * s + d * n * q) - (b * n * s + c * q * k + d * m * r)) / D,
+          y = ((a * n * s + c * p * k + d * l * r) - (a * r * k + c * l * s + d * n * p)) / D,
+          z = ((a * q * k + b * l * s + d * m * p) - (a * m * s + b * p * k + d * l * q)) / D;
+  
+        return [x, y, z];
+      }
+    } // solve
+
+    const match = (parms, grades) => {
+      let num = {
+        N: 0,
+        P: 1,
+        K: 2,
+      }
+       let rec = {
+          N: this.state.currentNValue,
+          P: this.state.currentPValue,
+          K: this.state.currentKValue,
+        }
+       let supplied = {
+          N: 0,
+          P: 0,
+          K: 0, 
+        }
+        let sd = {
+          N: rec.N,
+          P: rec.P,
+          K: rec.K
+        }
+        terms = parms.map(parm => rec[parm]),
+        matrix = parms.map((parm, i) => grades.map((grade, j) => grades[j][num[parm]])),
+        cr = solve(matrix, terms);
+  
+      if (cr.every(e => e >= 0 && e < Infinity)) {
+        cr.forEach((amt, i) => {
+          supplied.N += amt * grades[i][0]; //N
+          supplied.P += amt * grades[i][1]; //P
+          supplied.K += amt * grades[i][2]; //K
+        });
+  
+        alert("Hi there: "  + supplied.N)
+      }
+    } // match
+    
+    for (let i = 0; i < gradesParsed.length; i++) {
+      match(['N'], [gradesParsed[i]]);
+      match(['P'], [gradesParsed[i]]);
+      match(['K'], [gradesParsed[i]]);
+  
+      for (let j = i + 1; j < grades.length; j++) {
+        match(['N', 'P'], [gradesParsed[i], gradesParsed[j]]);
+        match(['N', 'K'], [gradesParsed[i], gradesParsed[j]]);
+        match(['P', 'K'], [gradesParsed[i], gradesParsed[j]]);
+  
+        for (let k = j + 1; k < gradesParsed.length; k++) {
+          match(['N', 'P', 'K'], [gradesParsed[i], gradesParsed[j], gradesParsed[k]]);
+        }
+      }
+    }
+    //alert(JSON.stringify(gradesParsed))
+  }//parseMe
+
+  
+
+
 
   //Gets values from selected grade
   parseGradeAndMatchGrade(grade) {
@@ -371,9 +435,9 @@ export default class MainScreen extends Component {
               onChangeText={user => {
                 this.setState({ userInput: user.trim().split(/\s+/) })
               }}
-              />
-              
-            <Button onPress={()=>{grades.push(state.userInput); this.parseMe(grades)}}>
+            />
+
+            <Button onPress={() => { grades.push(state.userInput); this.parseMe(grades) }}>
               <Text> Submit</Text>
             </Button>
 
@@ -392,6 +456,7 @@ export default class MainScreen extends Component {
               <Text> 10-10-10</Text>
             </Body>
           </ListItem>
+
 
 
 
@@ -463,7 +528,7 @@ export default class MainScreen extends Component {
             onChangeText={inputtedValue => {
               this.updateAcreValue(inputtedValue);
             }} />
-            
+
         </Content>
         <Footer>
           <FooterTab>

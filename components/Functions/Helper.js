@@ -5,6 +5,8 @@ export const rpd = (v1, v2) => {
   export const supplied = (match, grade) => {
     return match ? ((match * grade) / 100).toFixed(0) : "&ndash;";
   };
+
+
   
   export const calculateIndividualScore = (sn, sp, sk, recN, recP, recK) => {
     let sc;
