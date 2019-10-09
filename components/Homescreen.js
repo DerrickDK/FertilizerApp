@@ -477,8 +477,7 @@ export default class MainScreen extends Component {
         P = ((supplied.P - rec.P)/ factor).toFixed(2)
         K = ((supplied.K - rec.K) / factor).toFixed(2)
 
-        solutions.push(label, N1, P1, K1, N, P, K, score)
-        console.log("SOLUTION: "+JSON.stringify(solutions))
+        
 
         
         console.log("This is my score: "+score) //works
@@ -487,6 +486,11 @@ export default class MainScreen extends Component {
         console.log("num: "+K) //works
 
       }
+      this.setState({
+        arrayofValue: [[label, N1, P1, K1, N, P, K, score]]
+      })
+      solutions.push(label, N1, P1, K1, N, P, K, score)
+        console.log("SOLUTION: "+JSON.stringify(solutions))
       console.log("Supplied N: " + supplied.N) //works
       console.log("Supplied P: " + supplied.P) // works
       console.log("Supplied K: " + supplied.K) //works
