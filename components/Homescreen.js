@@ -28,7 +28,6 @@ export default class MainScreen extends Component {
 
       arrayofValue: [],
       arrayofValue1: [],
-      result: [],
 
       currentNValue: 0,
       currentPValue: 0,
@@ -467,9 +466,11 @@ export default class MainScreen extends Component {
           supplied.P += amt * grades[i][1]; //P
           supplied.K += amt * grades[i][2]; //K
         });
-        
+
+        let s = cr.filter(amt => amt > 0)
+                  .map((amt, i) => `${(amt * 100 / factor).toFixed(2)} ${unit} of ${grades[i].join('-')}`).join(' plus\n')
         score = calcScore(supplied.N, supplied.P, supplied.K)
-        label = "Recommendation"
+        label = `${s} per ${area}`
         N1 = (supplied.N / factor).toFixed(2)
         P1 = (supplied.P / factor).toFixed(2)
         K1 = (supplied.K / factor).toFixed(2)
@@ -478,18 +479,22 @@ export default class MainScreen extends Component {
         K = ((supplied.K - rec.K) / factor).toFixed(2)
 
         
-
-        
-        console.log("This is my score: "+score) //works
-        console.log("num:"+ N) //works
-        console.log("num: "+P) //works
-        console.log("num: "+K) //works
+        // console.log("This is my score: "+score) //works
+        // console.log("num:"+ N) //works
+        // console.log("num: "+P) //works
+        // console.log("num: "+K) //works
 
       }
-      this.setState({
-        arrayofValue: [[label, N1, P1, K1, N, P, K, score]]
+      this.state.arrayofValue = []
+      solutions.push([label, N1, P1, K1, N, P, K, score])
+      solutions.forEach(element => {
+        this.state.arrayofValue.push(element)
+      
       })
-      solutions.push(label, N1, P1, K1, N, P, K, score)
+      this.setState({
+        arrayofValue: this.state.arrayofValue.sort(function (a,b) {return b[7]-a[7]})
+      })
+      
         console.log("SOLUTION: "+JSON.stringify(solutions))
       console.log("Supplied N: " + supplied.N) //works
       console.log("Supplied P: " + supplied.P) // works
