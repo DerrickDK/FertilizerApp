@@ -22,10 +22,12 @@ export default class MainScreen extends Component {
     super(props);
 
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
-      userDefineCheck: false,
       gradeTenChecked: false,
-      userInput: null,
+      gradeFiveChecked: false,
+      gradeZeroChecked: false,
 
+      grades: null,
+      gradesParsed: [],
       arrayofValue: [],
       arrayofValue1: [],
 
@@ -41,202 +43,10 @@ export default class MainScreen extends Component {
       tempFactor: 0,
       currentArea: 0,
 
-      nResult: 0,
-      pResult: 0,
-      kResult: 0,
-
-      nArea: 0,
-      pArea: 0,
-      kArea: 0,
-
-      selectedGrade: [],
-      fullGrade: "",
-
-      matchN: 0,
-      matchP: 0,
-      matchK: 0,
-
-      suppliedN: 0,
-      suppliedP: 0,
-      suppliedK: 0,
-
-      suppliedNum1: 0,
-      suppliedNum2: 0,
-      suppliedNum3: 0,
-
-      suppliedNum4: 0,
-      suppliedNum5: 0,
-      suppliedNum6: 0,
-
-      suppliedNum7: 0,
-      suppliedNum8: 0,
-      suppliedNum9: 0,
-
-      score1: 0,
-      score2: 0,
-      score3: 0,
-
-      nlabel: null,
-      kLabel: null,
-      pLabel: null,
-
-      nValues: null,
-      pValues: null,
-      kValues: null,
+      
     };
 
   }//state
-
-  //  //This function rn is for checkboxes
-  //  parseGradeAndMatchGrade(grade) {
-  //   /*
-  //     Split the selected grades
-  //     Ex: 10-10-10 will become
-  //     gradeOne = 10
-  //     gradeTwo = 10
-  //     gradeThree = 10
-  //   */
-  //   this.state.selectedGrade = grade.split("-");
-
-  //   let gradeOne = (+this.state.selectedGrade[0]);
-  //   let gradeTwo = (+this.state.selectedGrade[1]);
-  //   let gradeThree = (+this.state.selectedGrade[2]);
-
-
-
-  //   // let testIF = () => {
-  //   //   if(gradeOne) {
-  //   //     return Math.ceil((this.state.currentNValue)/gradeOne) * 100;
-  //   //   } else { return 0 }
-  //   // }
-
-
-  //   let matchN = gradeOne ? Math.ceil((this.state.currentNValue / gradeOne) * 100) : 0; // (60/10)*100 => 600
-  //   let matchP = gradeTwo ? Math.ceil((this.state.currentPValue / gradeTwo) * 100) : 0;
-  //   let matchK = gradeThree ? Math.ceil((this.state.currentKValue / gradeThree) * 100) : 0;
-
-  //   //as soon as you set the state, run the function after
-  //   this.setState(
-  //     {
-  //       fullGrade: grade,
-  //       matchN: matchN, //gradeOne
-  //       matchP: matchP, //gradeTwo
-  //       matchK: matchK //gradeThree
-  //     },
-  //     () => {
-  //       this.calculateScore(grade); //use fullgrade to calculate score
-
-  //     }
-  //   );
-  // }
-
-  // //Score takes the full grade with (Ex 10-10-10)
-  // calculateScore(grade) {
-  //   this.setState(
-  //     {
-  //       suppliedNum1: supplied(+this.state.matchN, +this.state.selectedGrade[0]),// 600, 10 //supplied is a helper function (600 *10)/100 = 60
-  //       suppliedNum2: supplied(+this.state.matchN, +this.state.selectedGrade[1]),
-  //       suppliedNum3: supplied(+this.state.matchN, +this.state.selectedGrade[2]),
-
-  //       suppliedNum4: supplied(+this.state.matchP, +this.state.selectedGrade[0]),
-  //       suppliedNum5: supplied(+this.state.matchP, +this.state.selectedGrade[1]),
-  //       suppliedNum6: supplied(+this.state.matchP, +this.state.selectedGrade[2]),
-
-  //       suppliedNum7: supplied(+this.state.matchK, +this.state.selectedGrade[0]),
-  //       suppliedNum8: supplied(+this.state.matchK, +this.state.selectedGrade[1]),
-  //       suppliedNum9: supplied(+this.state.matchK, +this.state.selectedGrade[2])
-  //     },
-  //     () => {
-  //       this.calculateFinalScore(grade);
-
-  //     }
-  //   );
-  // }
-
-  // //Calculates final scores based on parameters
-  // calculateFinalScore(grade) { // 10-10-10
-  //   this.setState(
-  //     {
-  //       //score1 visual: 60,60,60, 60, 80, 100
-  //       score1: calculateIndividualScore(this.state.suppliedNum1, this.state.suppliedNum2, this.state.suppliedNum3, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue), //score for all N
-  //       score2: calculateIndividualScore(this.state.suppliedNum4, this.state.suppliedNum5, this.state.suppliedNum6, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue), //score for all P
-  //       score3: calculateIndividualScore(this.state.suppliedNum7, this.state.suppliedNum8, this.state.suppliedNum9, +this.state.currentNValue, +this.state.currentPValue, +this.state.currentKValue) //score for all K
-  //     },
-  //     () => {
-  //       this.calculateValues(grade);
-
-  //     }
-  //   );
-  // }
-
-
-  // //Calculating values relating to each row of data and storing into array
-  // calculateValues(grade) {
-  //   let nResult = this.state.nResult;  //# 60
-  //   let pResult = this.state.pResult; //# 80
-  //   let kResult = this.state.kResult; //# 100
-
-  //   this.state.nArea = ((nResult / this.state.selectedGrade[0]) * 100).toFixed(2); //label1 area text number
-
-  //   this.state.pArea = ((pResult / this.state.selectedGrade[1]) * 100).toFixed(2); //label2 area text number
-  //   this.state.kArea = ((kResult / this.state.selectedGrade[2]) * 100).toFixed(2);//label3 number
-
-  //   //nsd = Nutrients Surplus or Deficit
-  //   let NSD1 = nResult - nResult;
-  //   let PSD1 = nResult - pResult;
-  //   let KSD1 = nResult - kResult;
-
-  //   let NSD2 = pResult - nResult;
-  //   let PSD2 = pResult - pResult;
-  //   let KSD2 = pResult - kResult;
-
-  //   let NSD3 = kResult - nResult;
-  //   let PSD3 = kResult - pResult;
-  //   let KSD3 = kResult - kResult;
-
-
-  //   const changeMyColorPlease = (number) => {
-  //     if (number < 0) {
-  //       return <Text style={{ color: 'red', textAlign: "center" }}> {(-number).toFixed(2)}</Text>
-  //     }
-  //     else if (number == 0) {
-  //       return <Text style={{ color: 'green', textAlign: "center" }}> {number.toFixed(2)}</Text>
-  //     }
-  //     else {
-  //       return <Text style={{ color: 'blue', textAlign: "center" }}> {number.toFixed(2)}</Text>
-  //     }
-  //   }
-
-
-  //   if (grade == "10-10-10") {
-  //     if (this.state.gradeTenChecked) {
-
-  //       this.state.nlabel = ["Apply " + this.state.nArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-  //       this.state.nValues = [this.state.nlabel, this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), this.state.nResult.toFixed(2), changeMyColorPlease(NSD1), changeMyColorPlease(PSD1), changeMyColorPlease(KSD1), this.state.score1];
-
-  //       this.state.pLabel = ["Apply " + this.state.pArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-  //       this.state.pValues = [this.state.pLabel, this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), this.state.pResult.toFixed(2), changeMyColorPlease(NSD2), changeMyColorPlease(PSD2), changeMyColorPlease(KSD2), this.state.score2];
-
-  //       this.state.kLabel = ["Apply " + this.state.kArea + " " + this.state.poundsOrOunces + " of " + this.state.fullGrade + " per " + this.state.currentArea + " " + this.state.sfOrAcres];
-  //       this.state.kValues = [this.state.kLabel, this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), this.state.kResult.toFixed(2), changeMyColorPlease(NSD3), changeMyColorPlease(PSD3), changeMyColorPlease(KSD3), this.state.score3 - 1];
-
-  //       // this.state.arrayofValue.push(this.state.nValues, this.state.pValues, this.state.kValues)
-  //       // this.state.arrayofValue.sort(function(a,b){return b[7]-a[7]})
-
-
-  //       this.state.arrayofValue1.push(this.state.nValues, this.state.pValues, this.state.kValues)
-  //       this.state.arrayofValue1.sort(function (a, b) { return b[7] - a[7] })
-
-  //       this.setState({
-  //         arrayofValue: this.state.arrayofValue1,
-  //       })
-
-  //     }
-  //   }
-  // }
-
-
-
 
   unCheckValues() {
     this.setState({
@@ -247,12 +57,6 @@ export default class MainScreen extends Component {
       userDefineCheck: false,
     })
   }
-  userDefineCheckFunction() {
-    this.setState({
-      userDefineCheck: !this.state.userDefineCheck
-    });
-  }
-
   //Update value of acre amount
   updateAcreValue(inputtedValue) {
     this.setState(
@@ -262,33 +66,6 @@ export default class MainScreen extends Component {
       () => {
         this.calculateAcreValue();
 
-      }
-    );
-  }
-
-  //Update value of N
-  updateNValue(value) {
-    this.setState(
-      {
-        currentNValue: value
-      }
-    );
-  }
-
-  //Update value of P
-  updatePValue(value) {
-    this.setState(
-      {
-        currentPValue: value
-      }
-    );
-  }
-
-  //Update value of K
-  updateKValue(value) {
-    this.setState(
-      {
-        currentKValue: value
       }
     );
   }
@@ -319,19 +96,16 @@ export default class MainScreen extends Component {
       poundsOrOunces: poundsOrOunces,
       sfOrAcres: sfOrAcres,
       tempFactor: factor,
-      nResult: this.state.currentNValue / factor, //N 
-      pResult: this.state.currentPValue / factor, //P
-      kResult: this.state.currentKValue / factor, //K
 
       calculatedValue: [[(this.state.currentNValue / factor).toFixed(2), (this.state.currentPValue / factor).toFixed(2), (this.state.currentKValue / factor).toFixed(2)]]
     });
   }
 
   parseMe = (grade) => {
-    let gradesParsed = []
-    grade[0].forEach(element => {
-      gradesParsed.push(element.split('-'))
-      
+    this.state.gradesParsed = [] //if this isn't here then the grades will be duplicated 
+    grade.forEach(element => {
+      this.state.gradesParsed.push(element.split('-')) //an array of arrays
+
     })
     let factor = 0,
       num = {
@@ -347,8 +121,8 @@ export default class MainScreen extends Component {
       unit = this.state.poundsOrOunces,
       sfoA = this.state.sfOrAcres,
       solutions = [],
-      label ="Recommendation"
-      N = 0,
+      label = "Recommendation"
+    N = 0,
       P = 0,
       K = 0,
       N1 = 0,
@@ -372,6 +146,18 @@ export default class MainScreen extends Component {
 
     } else {
       factor = "Error";
+    }
+
+    const changeColor = (number) => {
+      if (number < 0) {
+        return <Text style={{ color: 'red', textAlign: "center" }}> {(-number).toFixed(2)}</Text>
+      }
+      else if (number == 0) {
+        return <Text style={{ color: 'green', textAlign: "center" }}> {number.toFixed(2)}</Text>
+      }
+      else {
+        return <Text style={{ color: 'blue', textAlign: "center" }}> {number.toFixed(2)}</Text>
+      }
     }
 
     const solve = (matrix, freeTerms) => { //function works
@@ -435,7 +221,7 @@ export default class MainScreen extends Component {
     } // calcSore
 
     const match = (parms, grades) => {
-    // console.log(parms) //works
+      // console.log(parms) //works
       let supplied = {
         N: 0,
         P: 0,
@@ -468,34 +254,40 @@ export default class MainScreen extends Component {
         });
 
         let s = cr.filter(amt => amt > 0)
-                  .map((amt, i) => `${(amt * 100 / factor).toFixed(2)} ${unit} of ${grades[i].join('-')}`).join(' plus\n')
+          .map((amt, i) => `${(amt * 100 / factor).toFixed(2)} ${unit} of ${grades[i].join('-')}`).join(' plus\n')
         score = calcScore(supplied.N, supplied.P, supplied.K)
         label = `${s} per ${area}`
+
         N1 = (supplied.N / factor).toFixed(2)
         P1 = (supplied.P / factor).toFixed(2)
         K1 = (supplied.K / factor).toFixed(2)
-        N = ((supplied.N - rec.N)/ factor).toFixed(2)
-        P = ((supplied.P - rec.P)/ factor).toFixed(2)
-        K = ((supplied.K - rec.K) / factor).toFixed(2)
+        N = ((supplied.N - rec.N) / factor)
+        P = ((supplied.P - rec.P) / factor)
+        K = ((supplied.K - rec.K) / factor)
 
-        
+
         // console.log("This is my score: "+score) //works
         // console.log("num:"+ N) //works
         // console.log("num: "+P) //works
         // console.log("num: "+K) //works
 
       }
+
       this.state.arrayofValue = []
-      solutions.push([label, N1, P1, K1, N, P, K, score])
+
+      solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
+      //  solutions.push([label, N1, P1, K1, N, P, K, score])  //an array of arrays
+
       solutions.forEach(element => {
-        this.state.arrayofValue.push(element)
-      
+        this.state.arrayofValue.push(element) //array of arrays
+
       })
       this.setState({
-        arrayofValue: this.state.arrayofValue.sort(function (a,b) {return b[7]-a[7]})
+        arrayofValue: this.state.arrayofValue.sort(function (a, b) { return b[7] - a[7] })
       })
-      
-        console.log("SOLUTION: "+JSON.stringify(solutions))
+
+      console.log("SOLUTION: " + JSON.stringify(solutions))
+      console.log("SOLUTION LENGTH: " + solutions.length)
       console.log("Supplied N: " + supplied.N) //works
       console.log("Supplied P: " + supplied.P) // works
       console.log("Supplied K: " + supplied.K) //works
@@ -503,23 +295,23 @@ export default class MainScreen extends Component {
 
     // console.log("my grades: " + gradesParsed) //works
     // console.log("my grades length: " + gradesParsed.length) //works
-    console.log(JSON.stringify(gradesParsed)) //works
+    console.log(JSON.stringify(this.state.gradesParsed)) //works
 
-    for (let i = 0; i < gradesParsed.length; i++) {
+    for (let i = 0; i < this.state.gradesParsed.length; i++) {
       //console.log("first loop: " + gradesParsed[i])//works
-      match(['N'], [gradesParsed[i]]);
-      match(['P'], [gradesParsed[i]]);
-      match(['K'], [gradesParsed[i]]);
+      match(['N'], [this.state.gradesParsed[i]]);
+      match(['P'], [this.state.gradesParsed[i]]);
+      match(['K'], [this.state.gradesParsed[i]]);
 
-      for (let j = i + 1; j < gradesParsed.length; j++) {
-       // console.log("second loop" + gradesParsed[j]) //works
-        match(['N', 'P'], [gradesParsed[i], gradesParsed[j]]);
-        match(['N', 'K'], [gradesParsed[i], gradesParsed[j]]);
-        match(['P', 'K'], [gradesParsed[i], gradesParsed[j]]);
+      for (let j = i + 1; j < this.state.gradesParsed.length; j++) {
+        // console.log("second loop" + gradesParsed[j]) //works
+        match(['N', 'P'], [this.state.gradesParsed[i], this.state.gradesParsed[j]]);
+        match(['N', 'K'], [this.state.gradesParsed[i], this.state.gradesParsed[j]]);
+        match(['P', 'K'], [this.state.gradesParsed[i], this.state.gradesParsed[j]]);
 
-        for (let k = j + 1; k < gradesParsed.length; k++) {
+        for (let k = j + 1; k < this.state.gradesParsed.length; k++) {
           //console.log("third loop" + gradesParsed[k]) //works
-          match(['N', 'P', 'K'], [gradesParsed[i], gradesParsed[j], gradesParsed[k]]);
+          match(['N', 'P', 'K'], [this.state.gradesParsed[i], this.state.gradesParsed[j], this.state.gradesParsed[k]]);
         }
       }
     }
@@ -527,55 +319,55 @@ export default class MainScreen extends Component {
 
   }//parseMe
 
-  render() {
+render() {
     const state = this.state;
-  
-
     return (
       <Container>
         <Content>
-          {/* <Header>
-          <Body>
-            <Title>Fertilizer Calculator</Title>
-          </Body>
-        </Header> */}
-
-
           <ListItem style={styles.centerView}>
-
-            {/* <CheckBox checked={state.userDefineCheck} 
-        onPress={() => {this.setState({userDefineCheck: !this.state.userDefineCheck},
-        ()=>{this.parseGradeAndMatchGrade(state.userInput); if(this.state.userDefineCheck == false){this.clearValues()}})}} /> */}
             <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
               placeholder="Enter Grades"
               keyboardType="default"
               multiline={true}
               onChangeText={user => {
-                this.setState({ userInput: user.trim().split(/\s+/) })
+                this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
             />
-
-            <Button onPress={() => { 
-              let grades = []
-              grades.push(state.userInput); this.parseMe(grades) 
+            <Button onPress={() => {
+              // alert(state.grades)
+              this.parseMe(state.grades);
             }}>
               <Text> Submit</Text>
             </Button>
-
           </ListItem>
-
-
 
           <ListItem>
             <CheckBox checked={state.gradeTenChecked}
               onPress={() => {
                 this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
-                  () => { this.parseGradeAndMatchGrade("10-10-10"); })
+                  () => { state.grades.push("10-10-10"); this.parseMe(state.grades) })
               }} />
             <Body>
               <Text> 10-10-10</Text>
             </Body>
+            <CheckBox checked={state.gradeFiveChecked}
+              onPress={() => {
+                this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
+                  () => { state.grades.push("5-5-5"); this.parseMe(state.grades) })
+              }} />
+            <Body>
+              <Text> 5-5-5</Text>
+            </Body>
+            <CheckBox checked={state.gradeZeroChecked}
+              onPress={() => {
+                this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
+                  () => { state.grades.push("0-10-10"); this.parseMe(state.grades) })
+              }} />
+            <Body>
+              <Text> 0-10-10</Text>
+            </Body>
+
           </ListItem>
 
           <View style={[styles.horizontalView, styles.centerView]}>
@@ -586,7 +378,7 @@ export default class MainScreen extends Component {
               keyboardType="numeric"
               placeholder="Enter N value"
               onChangeText={inputtedValue => {
-                this.updateNValue(inputtedValue);
+                this.setState({ currentNValue: inputtedValue })
               }}
             />
           </View>
@@ -599,7 +391,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter P value"
               onChangeText={inputtedValue => {
-                this.updatePValue(inputtedValue);
+                this.setState({ currentPValue: inputtedValue });
               }}
             />
           </View>
@@ -612,7 +404,7 @@ export default class MainScreen extends Component {
               style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
               placeholder="Enter K value"
               onChangeText={inputtedValue => {
-                this.updateKValue(inputtedValue);
+                this.setState({ currentKValue: inputtedValue })
               }}
             />
           </View>
@@ -626,7 +418,7 @@ export default class MainScreen extends Component {
             placeholder={state.defaultUnits}
             onValueChange={value => {
               this.setState({ defaultUnits: value }, () => {
-                this.calculateAcreValue();
+                this.calculateAcreValue(); //when value is changed callback function initiates 
 
               });
             }}
