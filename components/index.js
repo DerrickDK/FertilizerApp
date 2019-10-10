@@ -7,13 +7,13 @@ import { createStackNavigator} from 'react-navigation-stack'
 import {createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs'
 
-const HomeStack = createStackNavigator({
+const InputScreen = createStackNavigator({
   Homescreen: {
     screen: MainScreen,
   },
 });
 
-const SecondHomeStack = createStackNavigator({
+const OutputScreen = createStackNavigator({
   SecondHomeScreen: {
     screen: SecondScreen,
   },
@@ -25,13 +25,13 @@ const RootStack = createStackNavigator({
 })
 
 const App = createBottomTabNavigator({
-    HomeStack,
-    SecondHomeStack,
+    InputScreen,
+    OutputScreen,
 })
 
 
 
 //finalize everything for the container
-const ContainerApp = createAppContainer(App);
+const ContainerApp = createAppContainer(RootStack);
 
 export default ContainerApp; //export container component to be used in App.js
