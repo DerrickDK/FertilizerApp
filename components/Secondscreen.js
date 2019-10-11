@@ -34,7 +34,7 @@ export default class SecondScreen extends Component {
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
       gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
-      arrayofValue: this.props.navigation.state.params.arrayofValue,
+      output: this.props.navigation.state.params.output,
       
 
     }
@@ -57,7 +57,7 @@ export default class SecondScreen extends Component {
               <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
               </TableWrapper>
               <TableWrapper>
-                <Rows data={state.arrayofValue}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
+                <Rows data={state.output}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
               </TableWrapper>
             </Table>
 

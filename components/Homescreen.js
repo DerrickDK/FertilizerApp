@@ -26,10 +26,9 @@ export default class MainScreen extends Component {
       gradeFiveChecked: false,
       gradeZeroChecked: false,
 
-      grades: null,
+      grades: [],
       gradesParsed: [],
-      arrayofValue: [],
-      arrayofValue1: [],
+      output: [],
 
       currentNValue: 0,
       currentPValue: 0,
@@ -43,7 +42,7 @@ export default class MainScreen extends Component {
       tempFactor: 0,
       currentArea: 0,
 
-      
+
     };
 
   }//state
@@ -265,26 +264,17 @@ export default class MainScreen extends Component {
         P = ((supplied.P - rec.P) / factor)
         K = ((supplied.K - rec.K) / factor)
 
+        this.state.output = []
 
-        // console.log("This is my score: "+score) //works
-        // console.log("num:"+ N) //works
-        // console.log("num: "+P) //works
-        // console.log("num: "+K) //works
+        solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
+        solutions.sort(function (a, b) { return b[7] - a[7] })
+        //  solutions.push([label, N1, P1, K1, N, P, K, score])  //an array of arrays
+        solutions.forEach(element => {
+          this.state.output.push(element) //array of arrays
+
+        })
 
       }
-
-      this.state.arrayofValue = []
-
-      solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
-      //  solutions.push([label, N1, P1, K1, N, P, K, score])  //an array of arrays
-
-      solutions.forEach(element => {
-        this.state.arrayofValue.push(element) //array of arrays
-
-      })
-      this.setState({
-        arrayofValue: this.state.arrayofValue.sort(function (a, b) { return b[7] - a[7] })
-      })
 
       console.log("SOLUTION: " + JSON.stringify(solutions))
       console.log("SOLUTION LENGTH: " + solutions.length)
@@ -316,7 +306,6 @@ export default class MainScreen extends Component {
       }
     }
 
-
   }//parseMe
 
 render() {
@@ -346,7 +335,15 @@ render() {
             <CheckBox checked={state.gradeTenChecked}
               onPress={() => {
                 this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
-                  () => { state.grades.push("10-10-10"); this.parseMe(state.grades) })
+                  () => {
+
+                    alert("true")
+                    state.grades.push("10-10-10"); this.parseMe(state.grades);
+
+                    //state.grades.push("10-10-10"); this.parseMe(state.grades);
+
+
+                  })
               }} />
             <Body>
               <Text> 10-10-10</Text>
@@ -452,7 +449,7 @@ render() {
             </Button>
             <Button>
               <Icon name="pulse" onPress={
-                () => this.props.navigation.navigate("SecondScreen", { arrayofValue: state.arrayofValue, calculatedValue: state.calculatedValue })} />
+                () => this.props.navigation.navigate("SecondScreen", { output: state.output, calculatedValue: state.calculatedValue })} />
             </Button>
           </FooterTab>
         </Footer>
