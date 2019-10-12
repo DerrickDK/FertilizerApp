@@ -55,6 +55,48 @@ export default class SecondScreen extends Component {
             <Title>Second Home</Title>
           </Body>
         </Header> */}
+        <View style = {[styles.verticalView, styles.centerView]}>
+          <View style ={styles.horizontalView}>
+         <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center" }}
+              placeholder="Show Top"
+              keyboardType="numeric"
+              multiline={false}
+              onChangeText={user => {
+               // state.grades = [] //works with or without (keep)
+     
+               
+               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+              }}
+            />
+            <Button onPress={() => {
+            
+            }}>
+              <Text> Show</Text>
+            </Button>
+            </View>
+
+            <View style ={styles.horizontalView}>
+            <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center" }}
+              placeholder="Show Scores Higher Than "
+              keyboardType="numeric"
+              multiline={false}
+              onChangeText={user => {
+               // state.grades = [] //works with or without (keep)
+               
+               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+              }}
+            />
+            <Button onPress={() => {
+            
+            }}>
+              <Text> Show</Text>
+            </Button>
+            </View>
+
+            </View>
+
         <View>            
             <Table>
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
@@ -78,7 +120,8 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: "#f1f8ff" },
   text: { margin: 2, textAlign: "center" },
   horizontalView: { flexDirection: 'row' },
-  centerView: { flex: 1, justifyContent: "center", alignContent: "center" },
+  verticalView: {flexDirection: "column"},
+  centerView: { flex: 1, justifyContent: "center", alignItems: "center" },
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: { height: 28 },

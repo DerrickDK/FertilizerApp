@@ -74,6 +74,9 @@ export default class MainScreen extends Component {
   }
 
   selectAll(){
+    this.state.grades2.push("10-10-10")
+    this.state.grades2.push("5-5-5")
+    this.state.grades2.push("0-10-10")
     this.setState({
       gradeTenChecked: true,
       gradeFiveChecked: true,
@@ -86,6 +89,7 @@ export default class MainScreen extends Component {
     // state.solutions = []
 //     this.state.output = null
      this.setState({
+       condition: false,
        output: null,
        grades3: [],
        grades2: [],
@@ -429,8 +433,9 @@ render() {
             <Button onPress={() => {
               state.grades3 = []
                state.grades3 = state.grades2.concat(state.grades)
-               alert(JSON.stringify(state.grades3))
+              // alert(JSON.stringify(state.grades3))
                this.parseMe(state.grades3);
+            
             }}>
               <Text> Calculate</Text>
             </Button>
@@ -461,8 +466,11 @@ render() {
                    // alert("True")
                     state.grades2.push("10-10-10")
                   }else {
+                    let index = state.grades2.indexOf("10-10-10")
+                    if(index > -1){
+                     state.grades2.splice(index, 1)
+                    }
                     //alert("false")
-                    state.grades2.pop()
                   }
                 })
             
@@ -479,7 +487,10 @@ render() {
                     state.grades2.push("5-5-5")
                   }else {
                     //alert("false")
-                    state.grades2.pop()
+                    let index = state.grades2.indexOf("5-5-5")
+                    if(index > -1){
+                     state.grades2.splice(index, 1)
+                    }
                   }
                 
                 })
@@ -493,12 +504,15 @@ render() {
               onPress={() => {
                 this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
                   () => { 
-                    if(state.gradeZeroChecked == false) {
+                    if(state.gradeZeroChecked == false && state.condition == true) {
                      // alert("True")
                       state.grades2.push("0-10-10")
                     }else {
                    //   alert("false")
-                      state.grades2.pop()
+                   let index = state.grades2.indexOf("5-5-5")
+                   if(index > -1){
+                    state.grades2.splice(index, 1)
+                   }
                     }
                   })
               }} />
