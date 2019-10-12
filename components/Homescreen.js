@@ -25,9 +25,13 @@ export default class MainScreen extends Component {
       gradeTenChecked: false,
       gradeFiveChecked: false,
       gradeZeroChecked: false,
+      condition: false,
 
       grades: [],
+      grades2: [],
+      grades3: [],
       gradesParsed: [],
+      solutions: [],
       output: [],
 
       currentNValue: 0,
@@ -67,6 +71,28 @@ export default class MainScreen extends Component {
 
       }
     );
+  }
+
+  selectAll(){
+    this.setState({
+      gradeTenChecked: true,
+      gradeFiveChecked: true,
+      gradeZeroChecked: true,
+    })
+  }
+
+  clearAll(){
+  // this.state.grades = []
+    // state.solutions = []
+//     this.state.output = null
+     this.setState({
+       output: null,
+       grades3: [],
+       grades2: [],
+       gradeTenChecked: false,
+       gradeFiveChecked: false,
+       gradeZeroChecked: false,
+     })
   }
 
   //Calculate values relating to pounds per square feet
@@ -119,7 +145,6 @@ export default class MainScreen extends Component {
       },
       unit = this.state.poundsOrOunces,
       sfoA = this.state.sfOrAcres,
-      solutions = [],
       label = "Recommendation"
     N = 0,
       P = 0,
@@ -127,6 +152,7 @@ export default class MainScreen extends Component {
       N1 = 0,
       P1 = 0,
       K1 = 0,
+      this.state.solutions = [],
       score = 0,
       area = this.state.currentArea + " " + sfoA
 
@@ -254,30 +280,31 @@ export default class MainScreen extends Component {
 
         let s = cr.filter(amt => amt > 0)
           .map((amt, i) => `${(amt * 100 / factor).toFixed(2)} ${unit} of ${grades[i].join('-')}`).join(' plus\n')
-        score = calcScore(supplied.N, supplied.P, supplied.K)
+        
         label = `${s} per ${area}`
-
         N1 = (supplied.N / factor).toFixed(2)
         P1 = (supplied.P / factor).toFixed(2)
         K1 = (supplied.K / factor).toFixed(2)
         N = ((supplied.N - rec.N) / factor)
         P = ((supplied.P - rec.P) / factor)
         K = ((supplied.K - rec.K) / factor)
+        score = calcScore(supplied.N, supplied.P, supplied.K)
 
+      
         this.state.output = []
+        
 
-        solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
-        solutions.sort(function (a, b) { return b[7] - a[7] })
-        //  solutions.push([label, N1, P1, K1, N, P, K, score])  //an array of arrays
-        solutions.forEach(element => {
+        this.state.solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
+        this.state.solutions.sort(function (a, b) { return b[7] - a[7] }) //sorts based on score
+        this.state.solutions.forEach(element => {
           this.state.output.push(element) //array of arrays
 
         })
 
       }
 
-      console.log("SOLUTION: " + JSON.stringify(solutions))
-      console.log("SOLUTION LENGTH: " + solutions.length)
+      console.log("SOLUTION: " + JSON.stringify(this.state.solutions))
+      console.log("SOLUTION LENGTH: " + this.state.solutions.length)
       console.log("Supplied N: " + supplied.N) //works
       console.log("Supplied P: " + supplied.P) // works
       console.log("Supplied K: " + supplied.K) //works
@@ -311,63 +338,10 @@ export default class MainScreen extends Component {
 render() {
     const state = this.state;
     return (
-      <Container>
+      <Container >
         <Content>
-          <ListItem style={styles.centerView}>
-            <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
-              placeholder="Enter Grades"
-              keyboardType="default"
-              multiline={true}
-              onChangeText={user => {
-                this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
-              }}
-            />
-            <Button onPress={() => {
-              // alert(state.grades)
-              this.parseMe(state.grades);
-            }}>
-              <Text> Submit</Text>
-            </Button>
-          </ListItem>
-
-          <ListItem>
-            <CheckBox checked={state.gradeTenChecked}
-              onPress={() => {
-                this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
-                  () => {
-
-                    alert("true")
-                    state.grades.push("10-10-10"); this.parseMe(state.grades);
-
-                    //state.grades.push("10-10-10"); this.parseMe(state.grades);
-
-
-                  })
-              }} />
-            <Body>
-              <Text> 10-10-10</Text>
-            </Body>
-            <CheckBox checked={state.gradeFiveChecked}
-              onPress={() => {
-                this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
-                  () => { state.grades.push("5-5-5"); this.parseMe(state.grades) })
-              }} />
-            <Body>
-              <Text> 5-5-5</Text>
-            </Body>
-            <CheckBox checked={state.gradeZeroChecked}
-              onPress={() => {
-                this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
-                  () => { state.grades.push("0-10-10"); this.parseMe(state.grades) })
-              }} />
-            <Body>
-              <Text> 0-10-10</Text>
-            </Body>
-
-          </ListItem>
-
-          <View style={[styles.horizontalView, styles.centerView]}>
+          <View style = {[styles.horizontalView, styles.wrapper]}>
+        <View style={[styles.horizontalView, styles.centerView]}>
             <Text style={{ fontSize: 20 }}> N: </Text>
             <TextInput
               editable={true}
@@ -405,8 +379,7 @@ render() {
               }}
             />
           </View>
-
-
+          </View>
           <Picker
             enabled={true}
             mode="dropdown"
@@ -433,14 +406,108 @@ render() {
             onChangeText={inputtedValue => {
               this.updateAcreValue(inputtedValue); //gets the value entered in acre textInput
             }} />
-
           <View>
             <Table>
               <Rows data={state.calculatedValue} textStyle={styles.text} />
             </Table>
+          </View>
+          
+          <View style={[styles.verticalView, styles.centerView, styles.wrapper]}>
+            
+            <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
+              placeholder="Enter Grades"
+              keyboardType="default"
+              multiline={true}
+              onChangeText={user => {
+               // state.grades = [] //works with or without (keep)
+                state.grades = user.trim().split(/\s+/)
+               
+               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+              }}
+            />
+            <Button onPress={() => {
+              state.grades3 = []
+               state.grades3 = state.grades2.concat(state.grades)
+               alert(JSON.stringify(state.grades3))
+               this.parseMe(state.grades3);
+            }}>
+              <Text> Calculate</Text>
+            </Button>
+
+            <View style ={[styles.horizontalView]}>
+      
+            <Button onPress={() => {
+              // alert(JSON.stringify(state.grades))
+              this.selectAll()
+            }}>
+              <Text> Select All</Text>
+            </Button>
+
+            <Button onPress={() => {
+              this.clearAll()
+            }}>
+              <Text> Clear All</Text>
+            </Button>
+            </View>
 
           </View>
 
+          <ListItem>
+            <CheckBox checked={state.gradeTenChecked}
+              onPress={() => {
+                this.setState({ gradeTenChecked: !this.state.gradeTenChecked},
+                  () => { if(state.gradeTenChecked == false) {
+                   // alert("True")
+                    state.grades2.push("10-10-10")
+                  }else {
+                    //alert("false")
+                    state.grades2.pop()
+                  }
+                })
+            
+              }}
+               />
+            <Body>
+              <Text> 10-10-10</Text>
+            </Body>
+            <CheckBox checked={state.gradeFiveChecked}
+              onPress={() => {
+                this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
+                  () => { if(state.gradeFiveChecked == false) {
+                  //  alert("True")
+                    state.grades2.push("5-5-5")
+                  }else {
+                    //alert("false")
+                    state.grades2.pop()
+                  }
+                
+                })
+                  
+                
+              }} />
+            <Body>
+              <Text> 5-5-5</Text>
+            </Body>
+            <CheckBox checked={state.gradeZeroChecked}
+              onPress={() => {
+                this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
+                  () => { 
+                    if(state.gradeZeroChecked == false) {
+                     // alert("True")
+                      state.grades2.push("0-10-10")
+                    }else {
+                   //   alert("false")
+                      state.grades2.pop()
+                    }
+                  })
+              }} />
+            <Body>
+              <Text> 0-10-10</Text>
+            </Body>
+
+          </ListItem>
+          
         </Content>
         <Footer>
           <FooterTab>
@@ -463,8 +530,9 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: "#f1f8ff" },
   text: { margin: 2, textAlign: "center" },
   horizontalView: { flexDirection: 'row' },
-  centerView: { flex: 1, justifyContent: "center", alignContent: "center" },
-  wrapper: { flexDirection: 'row' },
+  verticalView: {flexDirection: "column"},
+  centerView: { flex: 1, justifyContent: "center", alignItems: "center" },
+  wrapper: { justifyContent: 'space-between' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: { height: 28 },
 });

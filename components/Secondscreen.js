@@ -40,6 +40,11 @@ export default class SecondScreen extends Component {
     }
   }
 
+  // in the future here we want to get the top score so to do that you would want to 
+  //filter through the array of elements and look specifically at index 7 
+  //map those new elements into the output array
+  //set the output array to the new elements that were filtered
+
   render() {
     const state = this.state;
     return (
