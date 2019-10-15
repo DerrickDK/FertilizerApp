@@ -4,6 +4,7 @@
  * @flow
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
+'use strict';
 
 import React, { Component } from "react";
 import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} from "react-native";
@@ -34,37 +35,45 @@ export default class SecondScreen extends Component {
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
       gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
+      solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
+
       
 
     }
   }
 
-  // in the future here we want to get the top score so to do that you would want to 
-  //filter through the array of elements and look specifically at index 7 
-  //map those new elements into the output array
-  //set the output array to the new elements that were filtered
+  scoreHigher(score){
+    this.state.output = []
+     this.state.solutions.filter((value, index, arr) => arr[index][7] > score)
+     .forEach(value => this.state.output.push(value))
+     this.setState({
+       output: this.state.output
+     })
+  
+   
+  }
 
   render() {
     const state = this.state;
     return (
       <Container>
-        <Content>
+        <Content style={{backgroundColor: "#fff1d6"}}>
         {/* <Header>
           <Body>
             <Title>Second Home</Title>
           </Body>
         </Header> */}
         <View style = {[styles.verticalView, styles.centerView]}>
-          <View style ={styles.horizontalView}>
+
+          {/* <View style ={styles.horizontalView}>
          <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center" }}
-              placeholder="Show Top"
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5, marginTop: 5 }}
+              placeholder="Show number of scores"
               keyboardType="numeric"
               multiline={false}
               onChangeText={user => {
                // state.grades = [] //works with or without (keep)
-     
                
                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
@@ -74,22 +83,22 @@ export default class SecondScreen extends Component {
             }}>
               <Text> Show</Text>
             </Button>
-            </View>
+            </View> */}
 
             <View style ={styles.horizontalView}>
             <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '50%', textAlign: "center" }}
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Scores Higher Than "
               keyboardType="numeric"
               multiline={false}
-              onChangeText={user => {
+              onChangeText={score => {
                // state.grades = [] //works with or without (keep)
-               
+               this.setState({filter: score})
                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
             />
-            <Button onPress={() => {
-            
+            <Button  onPress={() => {
+              this.scoreHigher(state.filter)
             }}>
               <Text> Show</Text>
             </Button>

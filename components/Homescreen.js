@@ -344,7 +344,7 @@ render() {
     const state = this.state;
     return (
       <Container >
-        <Content>
+        <Content style={{backgroundColor: "#fff1d6"}}>
           <View style={[styles.horizontalView, styles.wrapper]}>
             <View style={[styles.horizontalView, styles.centerView]}>
               <Text style={{ fontSize: 20 }}> N: </Text>
@@ -415,48 +415,6 @@ render() {
             <Table>
               <Rows data={state.calculatedValue} textStyle={styles.text} />
             </Table>
-          </View>
-
-          <View style={[styles.verticalView, styles.centerView, styles.wrapper]}>
-
-            <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
-              placeholder="Enter Grades"
-              keyboardType="default"
-              multiline={true}
-              onChangeText={user => {
-                // state.grades = [] //works with or without (keep)
-                state.grades = user.trim().split(/\s+/)
-
-                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
-              }}
-            />
-            <Button style={{ marginTop: 5 }} onPress={() => {
-              state.grades3 = []
-              state.grades3 = state.grades2.concat(state.grades)
-              // alert(JSON.stringify(state.grades3))
-              this.parseMe(state.grades3);
-
-            }}>
-              <Text> Calculate</Text>
-            </Button>
-
-            <View style={[styles.horizontalView, { margin: 30 }]}>
-
-              <Button onPress={() => {
-                // alert(JSON.stringify(state.grades))
-                this.selectAll()
-              }}>
-                <Text> Select All</Text>
-              </Button>
-
-              <Button style={{ marginLeft: 5 }} onPress={() => {
-                this.clearAll()
-              }}>
-                <Text> Clear All</Text>
-              </Button>
-            </View>
-
           </View>
 
           <ListItem>
@@ -537,8 +495,7 @@ render() {
             </Body>
 
           </ListItem>
-
-          {/* <ListItem>
+           {/* <ListItem>
             <CheckBox checked={state.gradeTenChecked}
               onPress={() => {
                 this.setState({ gradeTenChecked: !this.state.gradeTenChecked},
@@ -602,6 +559,49 @@ render() {
 
           </ListItem> */}
 
+
+          <View style={[styles.horizontalView, { margin: 30 }, styles.centerView]}>
+
+            <Button onPress={() => {
+              // alert(JSON.stringify(state.grades))
+              this.selectAll()
+            }}>
+              <Text> Select All</Text>
+            </Button>
+
+            <Button style={{ marginLeft: 5 }} onPress={() => {
+              this.clearAll()
+            }}>
+              <Text> Clear All</Text>
+            </Button>
+          </View>
+
+
+          <View style={[styles.verticalView, styles.centerView, styles.wrapper]}>
+
+            <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
+              placeholder="Enter Grades"
+              keyboardType="default"
+              multiline={true}
+              onChangeText={user => {
+                // state.grades = [] //works with or without (keep)
+                state.grades = user.trim().split(/\s+/)
+                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+              }}
+            />
+            <Button style={{ margin: 30 }} onPress={() => {
+              state.grades3 = []
+              state.grades3 = state.grades2.concat(state.grades)
+              // alert(JSON.stringify(state.grades3))
+              this.parseMe(state.grades3);
+
+            }}>
+              <Text > Calculate</Text>
+            </Button>
+          </View>
+
+
         </Content>
         <Footer>
           <FooterTab>
@@ -610,7 +610,7 @@ render() {
             </Button>
             <Button>
               <Icon name="pulse" onPress={
-                () => this.props.navigation.navigate("SecondScreen", { output: state.output, calculatedValue: state.calculatedValue })} />
+                () => this.props.navigation.navigate("SecondScreen", { output: state.output, solutions: state.solutions, calculatedValue: state.calculatedValue })} />
             </Button>
           </FooterTab>
         </Footer>
