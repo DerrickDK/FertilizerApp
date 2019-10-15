@@ -11,6 +11,7 @@ import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView }
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
 import { calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
+import { StackGestureContext } from "react-navigation-stack";
 
 
 export default class MainScreen extends Component {
@@ -73,7 +74,7 @@ export default class MainScreen extends Component {
     );
   }
 
-  selectAll(){
+  selectAll() {
     this.state.grades2.push("10-10-10")
     this.state.grades2.push("5-5-5")
     this.state.grades2.push("0-10-10")
@@ -84,19 +85,19 @@ export default class MainScreen extends Component {
     })
   }
 
-  clearAll(){
-  // this.state.grades = []
+  clearAll() {
+    // this.state.grades = []
     // state.solutions = []
-//     this.state.output = null
-     this.setState({
-       condition: false,
-       output: null,
-       grades3: [],
-       grades2: [],
-       gradeTenChecked: false,
-       gradeFiveChecked: false,
-       gradeZeroChecked: false,
-     })
+    //     this.state.output = null
+    this.setState({
+      condition: false,
+      output: null,
+      grades3: [],
+      grades2: [],
+      gradeTenChecked: false,
+      gradeFiveChecked: false,
+      gradeZeroChecked: false,
+    })
   }
 
   //Calculate values relating to pounds per square feet
@@ -284,7 +285,7 @@ export default class MainScreen extends Component {
 
         let s = cr.filter(amt => amt > 0)
           .map((amt, i) => `${(amt * 100 / factor).toFixed(2)} ${unit} of ${grades[i].join('-')}`).join(' plus\n')
-        
+
         label = `${s} per ${area}`
         N1 = (supplied.N / factor).toFixed(2)
         P1 = (supplied.P / factor).toFixed(2)
@@ -294,9 +295,9 @@ export default class MainScreen extends Component {
         K = ((supplied.K - rec.K) / factor)
         score = calcScore(supplied.N, supplied.P, supplied.K)
 
-      
+
         this.state.output = []
-        
+
 
         this.state.solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
         this.state.solutions.sort(function (a, b) { return b[7] - a[7] }) //sorts based on score
@@ -344,45 +345,45 @@ render() {
     return (
       <Container >
         <Content>
-          <View style = {[styles.horizontalView, styles.wrapper]}>
-        <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20 }}> N: </Text>
-            <TextInput
-              editable={true}
-              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
-              keyboardType="numeric"
-              placeholder="Enter N value"
-              onChangeText={inputtedValue => {
-                this.setState({ currentNValue: inputtedValue })
-              }}
-            />
-          </View>
+          <View style={[styles.horizontalView, styles.wrapper]}>
+            <View style={[styles.horizontalView, styles.centerView]}>
+              <Text style={{ fontSize: 20 }}> N: </Text>
+              <TextInput
+                editable={true}
+                style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
+                keyboardType="numeric"
+                placeholder="Enter N value"
+                onChangeText={inputtedValue => {
+                  this.setState({ currentNValue: inputtedValue })
+                }}
+              />
+            </View>
 
-          <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20 }}> P: </Text>
-            <TextInput
-              editable={true}
-              keyboardType="numeric"
-              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
-              placeholder="Enter P value"
-              onChangeText={inputtedValue => {
-                this.setState({ currentPValue: inputtedValue });
-              }}
-            />
-          </View>
+            <View style={[styles.horizontalView, styles.centerView]}>
+              <Text style={{ fontSize: 20 }}> P: </Text>
+              <TextInput
+                editable={true}
+                keyboardType="numeric"
+                style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
+                placeholder="Enter P value"
+                onChangeText={inputtedValue => {
+                  this.setState({ currentPValue: inputtedValue });
+                }}
+              />
+            </View>
 
-          <View style={[styles.horizontalView, styles.centerView]}>
-            <Text style={{ fontSize: 20 }}> K: </Text>
-            <TextInput
-              editable={true}
-              keyboardType="numeric"
-              style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
-              placeholder="Enter K value"
-              onChangeText={inputtedValue => {
-                this.setState({ currentKValue: inputtedValue })
-              }}
-            />
-          </View>
+            <View style={[styles.horizontalView, styles.centerView]}>
+              <Text style={{ fontSize: 20 }}> K: </Text>
+              <TextInput
+                editable={true}
+                keyboardType="numeric"
+                style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
+                placeholder="Enter K value"
+                onChangeText={inputtedValue => {
+                  this.setState({ currentKValue: inputtedValue })
+                }}
+              />
+            </View>
           </View>
           <Picker
             enabled={true}
@@ -415,45 +416,45 @@ render() {
               <Rows data={state.calculatedValue} textStyle={styles.text} />
             </Table>
           </View>
-          
+
           <View style={[styles.verticalView, styles.centerView, styles.wrapper]}>
-            
+
             <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
               placeholder="Enter Grades"
               keyboardType="default"
               multiline={true}
               onChangeText={user => {
-               // state.grades = [] //works with or without (keep)
+                // state.grades = [] //works with or without (keep)
                 state.grades = user.trim().split(/\s+/)
-               
-               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+
+                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
             />
-            <Button onPress={() => {
+            <Button style={{ marginTop: 5 }} onPress={() => {
               state.grades3 = []
-               state.grades3 = state.grades2.concat(state.grades)
+              state.grades3 = state.grades2.concat(state.grades)
               // alert(JSON.stringify(state.grades3))
-               this.parseMe(state.grades3);
-            
+              this.parseMe(state.grades3);
+
             }}>
               <Text> Calculate</Text>
             </Button>
 
-            <View style ={[styles.horizontalView]}>
-      
-            <Button onPress={() => {
-              // alert(JSON.stringify(state.grades))
-              this.selectAll()
-            }}>
-              <Text> Select All</Text>
-            </Button>
+            <View style={[styles.horizontalView, { margin: 30 }]}>
 
-            <Button onPress={() => {
-              this.clearAll()
-            }}>
-              <Text> Clear All</Text>
-            </Button>
+              <Button onPress={() => {
+                // alert(JSON.stringify(state.grades))
+                this.selectAll()
+              }}>
+                <Text> Select All</Text>
+              </Button>
+
+              <Button style={{ marginLeft: 5 }} onPress={() => {
+                this.clearAll()
+              }}>
+                <Text> Clear All</Text>
+              </Button>
             </View>
 
           </View>
@@ -461,12 +462,91 @@ render() {
           <ListItem>
             <CheckBox checked={state.gradeTenChecked}
               onPress={() => {
+                this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
+                  () => {
+                    if (state.gradeTenChecked == false) {
+                      // alert("True")
+                      state.grades2.push("10-10-10")
+                      this.parseMe(state.grades2)
+
+                    } else {
+
+                      let index = state.grades2.indexOf("10-10-10")
+                      if (index > -1) {
+                        state.grades2.splice(index, 1)
+                        this.parseMe(state.grades2)
+                      }
+                      //alert("false")
+                    }
+                  })
+
+              }}
+            />
+            <Body>
+              <Text> 10-10-10</Text>
+            </Body>
+            <CheckBox checked={state.gradeFiveChecked}
+              onPress={() => {
+                this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
+                  () => {
+                    if (state.gradeFiveChecked == false) {
+                      //  alert("True")
+                      state.grades2.push("5-5-5")
+                      this.parseMe(state.grades2)
+
+                    } else {
+                      //alert("false")
+                      let index = state.grades2.indexOf("5-5-5")
+                      let index1 = state.grades3.indexOf("5-5-5")
+                      if (index > -1 || index1 > -1) {
+                        state.grades2.splice(index, 1)
+                        state.grades3.splice(index1, 1)
+                        this.parseMe(state.grades2)
+                        this.parseMe(state.grades3)
+                      }
+                    }
+
+                  })
+
+
+              }} />
+            <Body>
+              <Text> 5-5-5</Text>
+            </Body>
+            <CheckBox checked={state.gradeZeroChecked}
+              onPress={() => {
+                this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
+                  () => {
+                    if (state.gradeZeroChecked == false) {
+                      // alert("True")
+                      state.grades2.push("0-10-10")
+                      this.parseMe(state.grades2)
+
+                    } else {
+                      //   alert("false")
+                      let index = state.grades2.indexOf("0-10-10")
+                      if (index > -1) {
+                        state.grades2.splice(index, 1)
+                        this.parseMe(state.grades2)
+                      }
+                    }
+                  })
+              }} />
+            <Body>
+              <Text> 0-10-10</Text>
+            </Body>
+
+          </ListItem>
+
+          {/* <ListItem>
+            <CheckBox checked={state.gradeTenChecked}
+              onPress={() => {
                 this.setState({ gradeTenChecked: !this.state.gradeTenChecked},
                   () => { if(state.gradeTenChecked == false) {
                    // alert("True")
-                    state.grades2.push("10-10-10")
+                    state.grades2.push("29-0-5")
                   }else {
-                    let index = state.grades2.indexOf("10-10-10")
+                    let index = state.grades2.indexOf("29-0-5")
                     if(index > -1){
                      state.grades2.splice(index, 1)
                     }
@@ -477,17 +557,17 @@ render() {
               }}
                />
             <Body>
-              <Text> 10-10-10</Text>
+              <Text> 29-0-5</Text>
             </Body>
             <CheckBox checked={state.gradeFiveChecked}
               onPress={() => {
                 this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
                   () => { if(state.gradeFiveChecked == false) {
                   //  alert("True")
-                    state.grades2.push("5-5-5")
+                    state.grades2.push("18-24-6")
                   }else {
                     //alert("false")
-                    let index = state.grades2.indexOf("5-5-5")
+                    let index = state.grades2.indexOf("18-4-6")
                     if(index > -1){
                      state.grades2.splice(index, 1)
                     }
@@ -498,7 +578,7 @@ render() {
                 
               }} />
             <Body>
-              <Text> 5-5-5</Text>
+              <Text> 18-24-6</Text>
             </Body>
             <CheckBox checked={state.gradeZeroChecked}
               onPress={() => {
@@ -506,10 +586,10 @@ render() {
                   () => { 
                     if(state.gradeZeroChecked == false && state.condition == true) {
                      // alert("True")
-                      state.grades2.push("0-10-10")
+                      state.grades2.push("14-7-7")
                     }else {
                    //   alert("false")
-                   let index = state.grades2.indexOf("5-5-5")
+                   let index = state.grades2.indexOf("14-7-7")
                    if(index > -1){
                     state.grades2.splice(index, 1)
                    }
@@ -517,11 +597,11 @@ render() {
                   })
               }} />
             <Body>
-              <Text> 0-10-10</Text>
+              <Text> 14-7-7</Text>
             </Body>
 
-          </ListItem>
-          
+          </ListItem> */}
+
         </Content>
         <Footer>
           <FooterTab>
@@ -540,13 +620,12 @@ render() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
   head: { height: 40, backgroundColor: "#f1f8ff" },
   text: { margin: 2, textAlign: "center" },
   horizontalView: { flexDirection: 'row' },
-  verticalView: {flexDirection: "column"},
+  verticalView: { flexDirection: "column" },
   centerView: { flex: 1, justifyContent: "center", alignItems: "center" },
-  wrapper: { justifyContent: 'space-between' },
+  wrapper: { justifyContent: 'space-around' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: { height: 28 },
 });
