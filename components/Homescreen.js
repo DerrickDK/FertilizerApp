@@ -6,10 +6,9 @@
  */
 
 import React, { Component } from "react";
-import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
-
+import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView} from "react-native";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
-import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBox, Body, Icon, Text, Picker, Button, Footer, FooterTab } from "native-base";
+import { Container, Header, Content, Form, Item, Input, ListItem, Title, Body, Icon, Text, Picker, Button, Footer, FooterTab, CheckBox} from "native-base";
 import { calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 import { StackGestureContext } from "react-navigation-stack";
 
@@ -23,10 +22,7 @@ export default class MainScreen extends Component {
     super(props);
 
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
-      gradeTenChecked: false,
-      gradeFiveChecked: false,
-      gradeZeroChecked: false,
-      condition: false,
+      checked: false,
 
       grades: [],
       grades2: [],
@@ -38,19 +34,64 @@ export default class MainScreen extends Component {
       currentNValue: 0,
       currentPValue: 0,
       currentKValue: 0,
-
+      currentArea: 1000,
       calculatedValue: [[0, 0, 0]],
 
       defaultUnits: "Pounds-Square Feet",
       poundsOrOunces: "",
       sfOrAcres: "",
       tempFactor: 0,
-      currentArea: 0,
+      
 
-
-    };
+    }
 
   }//state
+
+  checkBoxGrade = (props) => {
+    const state = this.state
+     const checkBoxGradeTable = [ //make sure all components are close together
+       [<View><CheckBox checked={state.checked}/><Text style={{textAlign: "center"}}>29-0-5</Text></View>,
+       <View><CheckBox checked={state.checked}/><Text style={{textAlign:"center"}}>32-0-8</Text></View>,
+       <View><CheckBox checked={state.checked}/><Text style={{textAlign:"center"}}>0-10-10</Text></View>,
+       <View><CheckBox checked={state.checked}/><Text style={{textAlign:"center"}}>18-0-3</Text></View>,
+       <View><CheckBox checked={state.checked}/><Text style={{textAlign:"center"}}>13-0-0</Text></View>
+      ],
+      [<View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+        <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+        <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+        <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+        <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>
+      ],
+      [<View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+          <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+          <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+          <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+          <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>
+        ],
+        [
+          <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>
+          ],
+          [<View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>,
+            <View><CheckBox/><Text style={{textAlign: "center"}}>10-10-10</Text></View>],
+
+      ]
+    return (
+      <Table borderStyle={{borderWidth: 1}}>
+      <TableWrapper>
+      <Rows data={checkBoxGradeTable} style={styles.row} textStyle={styles.text} flexArr={[5,5,5,5,5]} />
+      </TableWrapper>
+    </Table>
+    
+
+    )
+  }
 
   unCheckValues() {
     this.setState({
@@ -78,6 +119,7 @@ export default class MainScreen extends Component {
     this.state.grades2.push("10-10-10")
     this.state.grades2.push("5-5-5")
     this.state.grades2.push("0-10-10")
+
     this.setState({
       gradeTenChecked: true,
       gradeFiveChecked: true,
@@ -126,10 +168,11 @@ export default class MainScreen extends Component {
       poundsOrOunces: poundsOrOunces,
       sfOrAcres: sfOrAcres,
       tempFactor: factor,
-
       calculatedValue: [[(this.state.currentNValue / factor).toFixed(2), (this.state.currentPValue / factor).toFixed(2), (this.state.currentKValue / factor).toFixed(2)]]
     });
   }
+
+  
 
   parseMe = (grade) => {
     this.state.gradesParsed = [] //if this isn't here then the grades will be duplicated 
@@ -151,7 +194,7 @@ export default class MainScreen extends Component {
       unit = this.state.poundsOrOunces,
       sfoA = this.state.sfOrAcres,
       label = "Recommendation"
-    N = 0,
+      N = 0,
       P = 0,
       K = 0,
       N1 = 0,
@@ -342,6 +385,7 @@ export default class MainScreen extends Component {
 
 render() {
     const state = this.state;
+
     return (
       <Container >
         <Content style={{backgroundColor: "#fff1d6"}}>
@@ -354,7 +398,7 @@ render() {
                 keyboardType="numeric"
                 placeholder="Enter N value"
                 onChangeText={inputtedValue => {
-                  this.setState({ currentNValue: inputtedValue })
+                  this.setState({ currentNValue: inputtedValue },()=> this.calculateAcreValue())
                 }}
               />
             </View>
@@ -367,7 +411,7 @@ render() {
                 style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
                 placeholder="Enter P value"
                 onChangeText={inputtedValue => {
-                  this.setState({ currentPValue: inputtedValue });
+                  this.setState({ currentPValue: inputtedValue },()=> this.calculateAcreValue());
                 }}
               />
             </View>
@@ -380,7 +424,7 @@ render() {
                 style={{ borderBottomColor: "#42bcf5", borderBottomWidth: 1, fontSize: 20, height: 50, width: '50%' }}
                 placeholder="Enter K value"
                 onChangeText={inputtedValue => {
-                  this.setState({ currentKValue: inputtedValue })
+                  this.setState({ currentKValue: inputtedValue }, ()=>this.calculateAcreValue())
                 }}
               />
             </View>
@@ -408,8 +452,12 @@ render() {
             style={{ fontSize: 20, height: 50, textAlign: "center", borderBottomColor: "#42bcf5", borderBottomWidth: 1 }}
             placeholder="Enter value per acre"
             keyboardType="numeric"
+            defaultValue = "1000"
             onChangeText={inputtedValue => {
-              this.updateAcreValue(inputtedValue); //gets the value entered in acre textInput
+              this.setState({
+                currentArea: inputtedValue
+              },()=>this.calculateAcreValue()
+              )
             }} />
           <View>
             <Table>
@@ -417,7 +465,9 @@ render() {
             </Table>
           </View>
 
-          <ListItem>
+          <this.checkBoxGrade/>
+
+          {/* <ListItem>
             <CheckBox checked={state.gradeTenChecked}
               onPress={() => {
                 this.setState({ gradeTenChecked: !this.state.gradeTenChecked },
@@ -494,71 +544,7 @@ render() {
               <Text> 0-10-10</Text>
             </Body>
 
-          </ListItem>
-           {/* <ListItem>
-            <CheckBox checked={state.gradeTenChecked}
-              onPress={() => {
-                this.setState({ gradeTenChecked: !this.state.gradeTenChecked},
-                  () => { if(state.gradeTenChecked == false) {
-                   // alert("True")
-                    state.grades2.push("29-0-5")
-                  }else {
-                    let index = state.grades2.indexOf("29-0-5")
-                    if(index > -1){
-                     state.grades2.splice(index, 1)
-                    }
-                    //alert("false")
-                  }
-                })
-            
-              }}
-               />
-            <Body>
-              <Text> 29-0-5</Text>
-            </Body>
-            <CheckBox checked={state.gradeFiveChecked}
-              onPress={() => {
-                this.setState({ gradeFiveChecked: !this.state.gradeFiveChecked },
-                  () => { if(state.gradeFiveChecked == false) {
-                  //  alert("True")
-                    state.grades2.push("18-24-6")
-                  }else {
-                    //alert("false")
-                    let index = state.grades2.indexOf("18-4-6")
-                    if(index > -1){
-                     state.grades2.splice(index, 1)
-                    }
-                  }
-                
-                })
-                  
-                
-              }} />
-            <Body>
-              <Text> 18-24-6</Text>
-            </Body>
-            <CheckBox checked={state.gradeZeroChecked}
-              onPress={() => {
-                this.setState({ gradeZeroChecked: !this.state.gradeZeroChecked },
-                  () => { 
-                    if(state.gradeZeroChecked == false && state.condition == true) {
-                     // alert("True")
-                      state.grades2.push("14-7-7")
-                    }else {
-                   //   alert("false")
-                   let index = state.grades2.indexOf("14-7-7")
-                   if(index > -1){
-                    state.grades2.splice(index, 1)
-                   }
-                    }
-                  })
-              }} />
-            <Body>
-              <Text> 14-7-7</Text>
-            </Body>
-
           </ListItem> */}
-
 
           <View style={[styles.horizontalView, { margin: 30 }, styles.centerView]}>
 
@@ -593,14 +579,13 @@ render() {
             <Button style={{ margin: 30 }} onPress={() => {
               state.grades3 = []
               state.grades3 = state.grades2.concat(state.grades)
-              // alert(JSON.stringify(state.grades3))
               this.parseMe(state.grades3);
+              this.props.navigation.navigate("SecondScreen", { output: state.output, solutions: state.solutions, calculatedValue: state.calculatedValue })
 
             }}>
               <Text > Calculate</Text>
             </Button>
           </View>
-
 
         </Content>
         <Footer>
@@ -620,12 +605,11 @@ render() {
 }
 
 const styles = StyleSheet.create({
-  head: { height: 40, backgroundColor: "#f1f8ff" },
+  row: { height: 50, backgroundColor: "#f1f8ff" },
   text: { margin: 2, textAlign: "center" },
   horizontalView: { flexDirection: 'row' },
   verticalView: { flexDirection: "column" },
   centerView: { flex: 1, justifyContent: "center", alignItems: "center" },
   wrapper: { justifyContent: 'space-around' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: { height: 28 },
 });

@@ -66,25 +66,6 @@ export default class SecondScreen extends Component {
         </Header> */}
         <View style = {[styles.verticalView, styles.centerView]}>
 
-          {/* <View style ={styles.horizontalView}>
-         <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5, marginTop: 5 }}
-              placeholder="Show number of scores"
-              keyboardType="numeric"
-              multiline={false}
-              onChangeText={user => {
-               // state.grades = [] //works with or without (keep)
-               
-               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
-              }}
-            />
-            <Button onPress={() => {
-            
-            }}>
-              <Text> Show</Text>
-            </Button>
-            </View> */}
-
             <View style ={styles.horizontalView}>
             <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
@@ -93,7 +74,7 @@ export default class SecondScreen extends Component {
               multiline={false}
               onChangeText={score => {
                // state.grades = [] //works with or without (keep)
-               this.setState({filter: score})
+               this.setState({filter: +score})
                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
             />
@@ -107,7 +88,7 @@ export default class SecondScreen extends Component {
             </View>
 
         <View>            
-            <Table>
+            <Table borderStyle = {{borderWidth: 1}}>
               <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
               <TableWrapper>
               <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
