@@ -22,7 +22,7 @@ export default class MainScreen extends Component {
     super(props);
 
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
-      checked: true,
+      checked: null,
       grade0: false,
       grade1: false,
       grade2: false,
@@ -44,6 +44,10 @@ export default class MainScreen extends Component {
       grade18: false, 
       grade19: false, 
       grade20: false, 
+      grade21: false, 
+      grade22: false,
+      grade23: false,
+      grade24: false,
 
       gradesTable: [<Text style={{ textAlign: "center", fontSize: 40 }}>Grades</Text>],
       grades: [],
@@ -83,7 +87,7 @@ export default class MainScreen extends Component {
       }
     }
     const checkBoxGradeTable = [
-      [<View><CheckBox checked={state.grade0} onPress={() => {this.setState({ grade0: !this.state.grade0 }, () => { checker(state.grade0, "29-0-5") }) }} /><Text>29-0-5</Text></View>,
+      [<View><CheckBox checked={state.grade0} onPress={() => {this.setState({ grade0: !this.state.grade0 }, () => { checker(state.grade0, "32-0-8") }) }} /><Text>29-0-5</Text></View>,
       <View><CheckBox checked={state.grade1} onPress={() => { this.setState({ grade1: !this.state.grade1 }, () => { checker(state.grade1, "32-0-8") }) }} /><Text>32-0-8</Text></View>,
       <View><CheckBox checked={state.grade2} onPress={() => { this.setState({ grade2: !this.state.grade2 }, () => { checker(state.grade2, "0-10-10") }) }} /><Text>0-10-10</Text></View>,
       <View><CheckBox checked={state.grade3} onPress={() => { this.setState({ grade3: !this.state.grade3 }, () => { checker(state.grade3, "18-0-3") }) }} /><Text>18-0-3</Text></View>,
