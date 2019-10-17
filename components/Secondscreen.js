@@ -13,7 +13,10 @@ import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBo
 
 export default class SecondScreen extends Component {
   static navigationOptions = {
-    title: "Output Screen"
+    title: "Output Screen",
+    headerStyle: {
+      backgroundColor: "purple"
+    }
   }
   constructor(props) {
     super(props);
@@ -89,7 +92,7 @@ export default class SecondScreen extends Component {
 
         <View>            
             <Table borderStyle = {{borderWidth: 1}}>
-              <Rows data={state.nutrientsSuppliedLabel} textStyle={styles.text} />
+              <Rows data={state.nutrientsSuppliedLabel} style={styles.head} textStyle={styles.text} />
               <TableWrapper>
               <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
               </TableWrapper>

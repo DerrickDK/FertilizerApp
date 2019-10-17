@@ -16,6 +16,9 @@ import { StackGestureContext } from "react-navigation-stack";
 export default class MainScreen extends Component {
   static navigationOptions = {
     title: "Input Screen",
+    headerStyle: {
+      backgroundColor: "purple"
+    }
     //  header: null
   }
   constructor(props) {
@@ -129,37 +132,33 @@ export default class MainScreen extends Component {
 
     )
   }
-  unCheckValues() {
-    this.setState({
-      gradeTenChecked: false,
-      gradeFifteenChecked: false,
-      gradeZeroTenChecked: false,
-      gradeFiveChecked: false,
-      userDefineCheck: false,
-    })
-  }
-  //Update value of acre amount
-  updateAcreValue(inputtedValue) {
-    this.setState(
-      {
-        currentArea: inputtedValue
-      },
-      () => {
-        this.calculateAcreValue();
-
-      }
-    );
-  }
-
   selectAll() {
-    this.state.grades2.push("10-10-10")
-    this.state.grades2.push("5-5-5")
-    this.state.grades2.push("0-10-10")
-
     this.setState({
-      gradeTenChecked: true,
-      gradeFiveChecked: true,
-      gradeZeroChecked: true,
+      grade0: true,
+      grade1: true,
+      grade2: true,
+      grade3: true,
+      grade4: true,
+      grade5: true,
+      grade6: true,
+      grade7: true,
+      grade8: true,
+      grade9: true,
+      grade10: true,
+      grade11: true,
+      grade12: true, 
+      grade13: true, 
+      grade14: true,
+      grade15: true, 
+      grade16: true, 
+      grade17: true, 
+      grade18: true, 
+      grade19: true, 
+      grade20: true, 
+      grade21: true, 
+      grade22: true,
+      grade23: true,
+      grade24: true,
     })
   }
 
@@ -168,6 +167,31 @@ export default class MainScreen extends Component {
       output: null,
       grades3: [],
       grades2: [],
+      grade0: false,
+      grade1: false,
+      grade2: false,
+      grade3: false,
+      grade4: false,
+      grade5: false,
+      grade6: false,
+      grade7: false,
+      grade8: false,
+      grade9: false,
+      grade10: false,
+      grade11: false,
+      grade12: false, 
+      grade13: false, 
+      grade14: false,
+      grade15: false, 
+      grade16: false, 
+      grade17: false, 
+      grade18: false, 
+      grade19: false, 
+      grade20: false, 
+      grade21: false, 
+      grade22: false,
+      grade23: false,
+      grade24: false,
     })
   }
   //Calculate values relating to pounds per square feet
@@ -220,7 +244,7 @@ export default class MainScreen extends Component {
       unit = this.state.poundsOrOunces,
       sfoA = this.state.sfOrAcres,
       label = "Recommendation"
-    N = 0,
+      N = 0,
       P = 0,
       K = 0,
       N1 = 0,
@@ -498,7 +522,7 @@ render() {
           <View style={[styles.verticalView, styles.centerView, styles.wrapper]}>
 
             <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 300, width: '50%', textAlign: "center" }}
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 200, width: '70%', textAlign: "center" }}
               placeholder="Enter Grades"
               keyboardType="default"
               multiline={true}
@@ -511,6 +535,8 @@ render() {
             <Button style={{ margin: 30 }} onPress={() => {
               state.grades3 = []
               state.grades3 = state.grades2.concat(state.grades)
+              const uniqueSet = new Set(state.grades3)
+              state.grades3 = [...uniqueSet] //removes duplicates
               this.parseMe(state.grades3);
               this.props.navigation.navigate("SecondScreen", { output: state.output, solutions: state.solutions, calculatedValue: state.calculatedValue })
 
