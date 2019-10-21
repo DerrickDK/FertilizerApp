@@ -14,9 +14,9 @@ import { Container, Header, Content, Form, Item, Input, ListItem, Title, CheckBo
 export default class SecondScreen extends Component {
   static navigationOptions = {
     title: "Output Screen",
-    headerStyle: {
-      backgroundColor: "purple"
-    }
+    // headerStyle: {
+    //   backgroundColor: "purple"
+    // }
   }
   constructor(props) {
     super(props);
@@ -40,19 +40,19 @@ export default class SecondScreen extends Component {
       currentNValue: this.props.navigation.state.params.currentNValue,
       solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
-
-      
+      filter: null,
+      top: null, 
 
     }
   }
 
-  scoreHigher(score){
+  scoreHigher = () =>{
     this.state.output = []
-     this.state.solutions.filter((value, index, arr) => arr[index][7] > score)
+     this.state.solutions.filter((value, ind, arr) => (ind < this.state.top) && (arr[ind][7] >= this.state.filter))
      .forEach(value => this.state.output.push(value))
      this.setState({
        output: this.state.output
-     })
+     }) 
   
    
   }
@@ -69,6 +69,19 @@ export default class SecondScreen extends Component {
         </Header> */}
         <View style = {[styles.verticalView, styles.centerView]}>
 
+        <View style ={styles.horizontalView}>
+            <TextInput
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
+              placeholder="Show Number of Scores "
+              keyboardType="numeric"
+              multiline={false}
+              onChangeText={numberOfScores => {
+               this.setState({top: +numberOfScores}, ()=>{this.scoreHigher()})
+          
+              }}
+            />
+            </View>
+
             <View style ={styles.horizontalView}>
             <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
@@ -76,17 +89,16 @@ export default class SecondScreen extends Component {
               keyboardType="numeric"
               multiline={false}
               onChangeText={score => {
-               // state.grades = [] //works with or without (keep)
-               this.setState({filter: +score})
-               // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
+               this.setState({filter: +score}, ()=>{this.scoreHigher()})
               }}
             />
-            <Button  onPress={() => {
-              this.scoreHigher(state.filter)
+            </View>
+
+            {/* <Button  onPress={() => {
+              this.scoreHigher(state.filter, state.top)
             }}>
               <Text> Show</Text>
-            </Button>
-            </View>
+            </Button> */}
 
             </View>
 
