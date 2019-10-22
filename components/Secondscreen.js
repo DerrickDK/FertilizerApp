@@ -40,22 +40,23 @@ export default class SecondScreen extends Component {
       currentNValue: this.props.navigation.state.params.currentNValue,
       solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
-      filter: null,
-      top: null, 
+      filter: 70,
+      top: 10, 
 
     }
+    
   }
 
   scoreHigher = () =>{
     this.state.output = []
      this.state.solutions.filter((value, ind, arr) => (ind < this.state.top) && (arr[ind][7] >= this.state.filter))
      .forEach(value => this.state.output.push(value))
-     this.setState({
-       output: this.state.output
-     }) 
+    //  this.setState({
+    //    output: this.state.output
+    //  }) 
   
-   
   }
+ 
 
   render() {
     const state = this.state;
@@ -74,6 +75,7 @@ export default class SecondScreen extends Component {
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Number of Scores "
               keyboardType="numeric"
+              defaultValue="10"
               multiline={false}
               onChangeText={numberOfScores => {
                this.setState({top: +numberOfScores}, ()=>{this.scoreHigher()})
@@ -87,6 +89,7 @@ export default class SecondScreen extends Component {
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Scores Higher Than "
               keyboardType="numeric"
+              defaultValue="70"
               multiline={false}
               onChangeText={score => {
                this.setState({filter: +score}, ()=>{this.scoreHigher()})

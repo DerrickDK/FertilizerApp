@@ -24,13 +24,7 @@ export default class MainScreen extends Component {
   constructor(props) {
     super(props);
 
-    // const grades = [
-    //   [state.grade0, state.grade1, state.grade2, state.grade3, state.grade4],
-    //   [state.grade5, state.grade6, state.grade7, state.grade8, state.grade9],
-    //   [state.grade10, state.grade11, state.grade12, state.grade13, state.grade14],
-    //   [state.grade15, state.grade16, state.grade17, state.grade18, state.grade19],
-    //   [state.grade20, state.grade21, state.grade22, state.grade23, state.grade24],
-    // ]
+
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
       checked: false,
       grade0: false,
@@ -77,88 +71,12 @@ export default class MainScreen extends Component {
       poundsOrOunces: "",
       sfOrAcres: "",
       tempFactor: 0,
-    }
+    }//state
 
-  }//state
+  }//constructor 
 
   //checkboxcomponent close
   checkBoxGrade = (props) => {
-    // const state = this.state
-
-    // const checker = (gradeBoxCondition, number) => {
-    //     if (gradeBoxCondition == false) {
-    //       state.grades2.push(number)
-    //     } else {
-    //       let index = state.grades2.indexOf(number)
-    //       let index2 = state.grades3.indexOf(number)
-    //       if (index > -1 || index2 > -1) {
-    //         state.grades2.splice(index, 1)
-    //         state.grades3.splice(index2, 1)
-    //       }
-    //     }
-    //   }
-    // const testMe = [
-      
-    //   ["10-10-10", "5-5-5", "7-7-7", "8-8-8", "7-7-7"],
-    //   ["10-10-10", "5-5-5", "7-7-7", "8-8-8", "8-8-8"],
-    //   ["10-10-10", "5-5-5", "7-7-7", "8-8-8", "8-8-8"],
-    //   ["10-10-10", "5-5-5", "7-7-7", "8-8-8", "6-4-5"],
-    //   ["10-10-10", "5-5-5", "7-7-7", "8-8-8", "7-7-7"],
-      
-      
-    // ];
-    // const grades = [
-    //   [state.grade0, state.grade1, state.grade2, state.grade3, state.grade4],
-    //   [state.grade5, state.grade6, state.grade7, state.grade8, state.grade9],
-    //   [state.grade10, state.grade11, state.grade12, state.grade13, state.grade14],
-    //   [state.grade15, state.grade16, state.grade17, state.grade18, state.grade19],
-    //   [state.grade20, state.grade21, state.grade22, state.grade23, state.grade24],
-
-    // ]
-    // const tableData = [];
-    // for (let i = 0; i < 5; i += 1) {
-    //   const rowData = [];
-    //   for (let j = 0; j < 5; j += 1) {
-    //     //rowData.push(`${i}${j}`);
-
-    //     const checkbox =
-    //       (
-    //         <View>
-    //           <CheckBox checked ={!grades[i][j]} onPress={() => {this.setState({checked: !grades[i][j]},()=> {checker(state.checked, testMe[i][j])} )  }}/>
-    //           <Text> {`${testMe[i][j]}`}</Text>
-    //         </View>
-
-    //       )
-    //     rowData.push(checkbox)
-    //   }
-    //   tableData.push(rowData);
-    // }
-    // return (
-    //   <View>
-    //     <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-    //       <Row data={state.gradesTable} style={styles.row} />
-    //     </Table>
-
-    //     <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-    //       {
-    //         tableData.map((rowData, index) => (
-    //           <Row
-    //             key={index}
-    //             data={rowData}
-    //             style={styles.row}
-    //             textStyle={styles.text}
-    //           />
-    //         ))
-
-    //       }
-
-    //     </Table>
-
-    //   </View>
-
-
-    // )
-    
     const state = this.state
     const checker = (gradeBoxCondition, number) => {
 
@@ -216,35 +134,37 @@ export default class MainScreen extends Component {
 
     )
   }
+  
   selectAll() {
-    
-    this.setState({
-      grade0: true,
-      grade1: true,
-      grade2: true,
-      grade3: true,
-      grade4: true,
-      grade5: true,
-      grade6: true,
-      grade7: true,
-      grade8: true,
-      grade9: true,
-      grade10: true,
-      grade11: true,
-      grade12: true, 
-      grade13: true, 
-      grade14: true,
-      grade15: true, 
-      grade16: true, 
-      grade17: true, 
-      grade18: true, 
-      grade19: true, 
-      grade20: true, 
-      grade21: true, 
-      grade22: true,
-      grade23: true,
-      grade24: true,
-    })
+    const array = [this.state.grade0, this.state.grade1]
+    array.map(value => {this.setState({value: f})})
+    // this.setState({
+    //   grade0: true,
+    //   grade1: true,
+    //   grade2: true,
+    //   grade3: true,
+    //   grade4: true,
+    //   grade5: true,
+    //   grade6: true,
+    //   grade7: true,
+    //   grade8: true,
+    //   grade9: true,
+    //   grade10: true,
+    //   grade11: true,
+    //   grade12: true, 
+    //   grade13: true, 
+    //   grade14: true,
+    //   grade15: true, 
+    //   grade16: true, 
+    //   grade17: true, 
+    //   grade18: true, 
+    //   grade19: true, 
+    //   grade20: true, 
+    //   grade21: true, 
+    //   grade22: true,
+    //   grade23: true,
+    //   grade24: true,
+    // })
   }
 
   clearAll() {
@@ -290,7 +210,6 @@ export default class MainScreen extends Component {
 
     } else if (poundsOrOunces == "Pounds" && sfOrAcres == "Acre") {
       factor = 1 / +this.state.currentArea;
-
 
     } else if (poundsOrOunces == "Ounces" && sfOrAcres == "Square Feet") {
       factor = (0.0625 * 43560) / this.state.currentArea;
@@ -466,7 +385,6 @@ export default class MainScreen extends Component {
 
         this.state.output = []
 
-
         this.state.solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
         this.state.solutions.sort(function (a, b) { return b[7] - a[7] })
         this.state.solutions.forEach(element => {
@@ -589,12 +507,12 @@ render() {
 
           <View style={[styles.horizontalView, { margin: 30 }, styles.centerView]}>
 
-            <Button onPress={() => {
+            {/* <Button onPress={() => {
               // alert(JSON.stringify(state.grades))
               this.selectAll()
             }}>
               <Text> Select All</Text>
-            </Button>
+            </Button> */}
 
             <Button style={{ marginLeft: 5 }} onPress={() => {
               this.clearAll()
