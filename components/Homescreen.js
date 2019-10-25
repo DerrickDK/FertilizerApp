@@ -24,7 +24,6 @@ export default class MainScreen extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = { //You use inside the render, vars, and functions, but never for other states inside this body
       checked: false,
       grade0: false,
@@ -53,7 +52,7 @@ export default class MainScreen extends Component {
       grade23: false,
       grade24: false,
 
-      gradesTable: [<Text style={{ textAlign: "center", fontSize: 40 }}>Grades</Text>],
+      gradesTable: [<Text style={{ textAlign: "center", fontSize: 20 }}>Grades</Text>],
       grades: [],
       grades2: [],
       grades3: [],
@@ -92,7 +91,7 @@ export default class MainScreen extends Component {
       }
     }
     const checkBoxGradeTable = [
-      [<View><CheckBox checked={state.grade0} onPress={() => {this.setState({ grade0: !this.state.grade0 }, () => { checker(state.grade0, "32-0-8") })}} /><Text>29-0-5</Text></View>,
+      [<View><CheckBox checked={state.grade0} onPress={() => {this.setState({ grade0: !this.state.grade0 }, () => { checker(state.grade0, "29-0-5") })}} /><Text>29-0-5</Text></View>,
       <View><CheckBox checked={state.grade1} onPress={() => { this.setState({ grade1: !this.state.grade1 }, () => { checker(state.grade1, "32-0-8") }) }} /><Text>32-0-8</Text></View>,
       <View><CheckBox checked={state.grade2} onPress={() => { this.setState({ grade2: !this.state.grade2 }, () => { checker(state.grade2, "0-10-10") }) }} /><Text>0-10-10</Text></View>,
       <View><CheckBox checked={state.grade3} onPress={() => { this.setState({ grade3: !this.state.grade3 }, () => { checker(state.grade3, "18-0-3") }) }} /><Text>18-0-3</Text></View>,
@@ -136,35 +135,21 @@ export default class MainScreen extends Component {
   }
   
   selectAll() {
-    const array = [this.state.grade0, this.state.grade1]
-    array.map(value => {this.setState({value: f})})
-    // this.setState({
-    //   grade0: true,
-    //   grade1: true,
-    //   grade2: true,
-    //   grade3: true,
-    //   grade4: true,
-    //   grade5: true,
-    //   grade6: true,
-    //   grade7: true,
-    //   grade8: true,
-    //   grade9: true,
-    //   grade10: true,
-    //   grade11: true,
-    //   grade12: true, 
-    //   grade13: true, 
-    //   grade14: true,
-    //   grade15: true, 
-    //   grade16: true, 
-    //   grade17: true, 
-    //   grade18: true, 
-    //   grade19: true, 
-    //   grade20: true, 
-    //   grade21: true, 
-    //   grade22: true,
-    //   grade23: true,
-    //   grade24: true,
-    // })
+    this.setState({
+      grade0: true, grade1: true, grade2: true, grade3: true,
+      grade4: true, grade5: true,grade6: true, grade7: true, 
+      grade8: true,grade9: true, grade10: true, grade11: true,
+      grade12: true,grade13: true, grade14: true, grade15: true, 
+      grade16: true, grade17: true, grade18: true, grade19: true, 
+      grade20: true, grade21: true, grade22: true,grade23: true,
+      grade24: true,
+    }, () =>{
+      this.state.grades2.push(
+        "29-0-5", "32-0-8","0-10-10","18-0-3","13-0-0","18-24-26","1-15-0",
+        "5-5-3","10-0-6","3-4-4","10-10-10","7-2-2","4-5-3","4-3-4","6-8-0",
+        "14-7-7","5-6-3","7-3-3","15-0-15","12-0-0","10-5-4","5-5-5","4-6-2",
+        "6-2-1","9-23-30")
+    })
   }
 
   clearAll() {
@@ -172,30 +157,14 @@ export default class MainScreen extends Component {
       output: null,
       grades3: [],
       grades2: [],
-      grade0: false,
-      grade1: false,
-      grade2: false,
-      grade3: false,
-      grade4: false,
-      grade5: false,
-      grade6: false,
-      grade7: false,
-      grade8: false,
-      grade9: false,
-      grade10: false,
-      grade11: false,
-      grade12: false, 
-      grade13: false, 
-      grade14: false,
-      grade15: false, 
-      grade16: false, 
-      grade17: false, 
-      grade18: false, 
-      grade19: false, 
-      grade20: false, 
-      grade21: false, 
-      grade22: false,
-      grade23: false,
+      grade0: false, grade1: false, grade2: false,
+      grade3: false, grade4: false, grade5: false,
+      grade6: false, grade7: false, grade8: false,
+      grade9: false, grade10: false, grade11: false,
+      grade12: false, grade13: false, grade14: false,
+      grade15: false, grade16: false, grade17: false, 
+      grade18: false, grade19: false, grade20: false, 
+      grade21: false, grade22: false,grade23: false,
       grade24: false,
     })
   }
@@ -427,8 +396,11 @@ render() {
     return (
       <Container >
         <Content style={{ backgroundColor: "#fff1d6" }}>
-          <View style={[styles.horizontalView, styles.wrapper]}>
-            <View style={[styles.horizontalView, styles.centerView]}>
+
+        <View>
+            <Table borderStyle={{ borderWidth: 1 }}>
+            <Row data={[<Text style={{ textAlign: "center", fontSize: 20 }}>Recommendation from soil test report</Text>]} style={styles.row} textStyle={styles.text}> </Row>
+              <Rows data={[[<View style={[styles.horizontalView, styles.centerView]}>
               <Text style={{ fontSize: 20 }}> N: </Text>
               <TextInput
                 editable={true}
@@ -439,8 +411,7 @@ render() {
                   this.setState({ currentNValue: inputtedValue }, () => this.calculateAcreValue())
                 }}
               />
-            </View>
-
+            </View>, 
             <View style={[styles.horizontalView, styles.centerView]}>
               <Text style={{ fontSize: 20 }}> P: </Text>
               <TextInput
@@ -452,8 +423,7 @@ render() {
                   this.setState({ currentPValue: inputtedValue }, () => this.calculateAcreValue());
                 }}
               />
-            </View>
-
+            </View>, 
             <View style={[styles.horizontalView, styles.centerView]}>
               <Text style={{ fontSize: 20 }}> K: </Text>
               <TextInput
@@ -465,8 +435,13 @@ render() {
                   this.setState({ currentKValue: inputtedValue }, () => this.calculateAcreValue())
                 }}
               />
-            </View>
-          </View>
+            </View>]]} textStyle={styles.text} />
+            <Row data={[<Text style={{ textAlign: "center", fontSize: 20 }}>Application</Text>]} style={styles.row} textStyle={styles.text}> </Row>
+            </Table>
+        </View>
+
+
+
           <Picker
             enabled={true}
             mode="dropdown"
@@ -507,12 +482,12 @@ render() {
 
           <View style={[styles.horizontalView, { margin: 30 }, styles.centerView]}>
 
-            {/* <Button onPress={() => {
+            <Button onPress={() => {
               // alert(JSON.stringify(state.grades))
               this.selectAll()
             }}>
               <Text> Select All</Text>
-            </Button> */}
+            </Button>
 
             <Button style={{ marginLeft: 5 }} onPress={() => {
               this.clearAll()

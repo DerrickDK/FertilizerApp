@@ -75,7 +75,6 @@ export default class SecondScreen extends Component {
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Number of Scores "
               keyboardType="numeric"
-              defaultValue="10"
               multiline={false}
               onChangeText={numberOfScores => {
                this.setState({top: +numberOfScores}, ()=>{this.scoreHigher()})
@@ -89,7 +88,6 @@ export default class SecondScreen extends Component {
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Scores Higher Than "
               keyboardType="numeric"
-              defaultValue="70"
               multiline={false}
               onChangeText={score => {
                this.setState({filter: +score}, ()=>{this.scoreHigher()})
