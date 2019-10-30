@@ -356,18 +356,17 @@ export default class MainScreen extends Component {
 
         this.state.solutions.push([label, N1, P1, K1, changeColor(N), changeColor(P), changeColor(K), score])
         this.state.solutions.sort(function (a, b) { return b[7] - a[7] })
-        this.state.solutions.forEach(element => {
+        .filter((value, ind, arr) => (ind < 10) && (arr[ind][7] >= 70)).forEach(element => {
           this.state.output.push(element) //array of arrays
 
         })
-
       }
 
       console.log("SOLUTION: " + JSON.stringify(this.state.solutions))
-      console.log("SOLUTION LENGTH: " + this.state.solutions.length)
-      console.log("Supplied N: " + supplied.N) //works
-      console.log("Supplied P: " + supplied.P) // works
-      console.log("Supplied K: " + supplied.K) //works
+       console.log("SOLUTION LENGTH: " + this.state.solutions.length)
+      // console.log("Supplied N: " + supplied.N) //works
+      // console.log("Supplied P: " + supplied.P) // works
+      // console.log("Supplied K: " + supplied.K) //works
     } // match
 
     console.log(JSON.stringify(this.state.gradesParsed)) //works
@@ -501,7 +500,7 @@ render() {
 
             <TextInput
               style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 200, width: '70%', textAlign: "center" }}
-              placeholder="Enter Grades"
+              placeholder="You Can Enter Your Own Grades"
               keyboardType="default"
               multiline={true}
               onChangeText={user => {
