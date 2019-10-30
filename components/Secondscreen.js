@@ -36,8 +36,6 @@ export default class SecondScreen extends Component {
       )
     this.state = {
       nutrientsSuppliedLabel: [[Nutrients1, Nutrients2], ["Recommendation", "N", "P", "K", "N", "P", "K","Score"]],
-      // gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
-      //gradeData: [["N", "P", "K", "N", "P", "K"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
       solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
@@ -64,11 +62,6 @@ export default class SecondScreen extends Component {
     return (
       <Container>
         <Content style={{backgroundColor: "#fff1d6"}}>
-        {/* <Header>
-          <Body>
-            <Title>Second Home</Title>
-          </Body>
-        </Header> */}
         <View style = {[styles.verticalView, styles.centerView]}>
 
         <View style ={[styles.horizontalView, styles.centerView,{marginLeft: 20}]}>
@@ -109,26 +102,16 @@ export default class SecondScreen extends Component {
               or higher
             </Text>
             </View>
-
-            {/* <Button  onPress={() => {
-              this.scoreHigher(state.filter, state.top)
-            }}>
-              <Text> Show</Text>
-            </Button> */}
-
             </View>
 
         <View>            
             <Table borderStyle = {{borderWidth: 1}}>
-              <Row data= {["Fertilizer Recommendations Based on Available Grades"]} style={{height: 40, backgroundColor: "#4f92ff"}} textStyle={styles.text}></Row>
+            <TableWrapper>
+              <Row data= {["Fertilizer Recommendations Based on Available Grades"]} style={{height: 40, backgroundColor: "#4f92ff"}} textStyle={[styles.text, {color: "white"}]}></Row>
               <Rows data={state.nutrientsSuppliedLabel}  style={styles.head} textStyle={styles.text} />
-              {/* <Rows data={state.nutrientsSuppliedLabel}  flexArr={[3,4]}style={styles.head} textStyle={styles.text} /> */}
-              <TableWrapper>
-              {/* <Rows data={state.gradeData} style={styles.head} flexArr={[2,2,2,2,2,2]} textStyle={styles.text} /> */}
               </TableWrapper>
               <TableWrapper>
-                {/* <Rows data={state.output}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} /> */}
-                 <Rows data={state.output}flexArr={[1,1,1,1,1,1]} textStyle={styles.text} />
+                 <Rows data={state.output} flexArr={[1,1,1,1,1,1]} textStyle={styles.text} style={{borderBottomWidth: 2, borderTopWidth: 2, borderBottomColor: "black", borderTopColor: "grey"}} />
               </TableWrapper>
             </Table>
 
