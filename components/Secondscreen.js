@@ -35,8 +35,7 @@ export default class SecondScreen extends Component {
       </View>
       )
     this.state = {
-      nutrientsSuppliedLabel: [[Nutrients1, Nutrients2]],
-      gradeData: [["Recommendation","N", "P", "K", "N", "P", "K", "Score"]],
+      nutrientsSuppliedLabel: [[Nutrients1, Nutrients2], ["Recommendation", "N", "P", "K", "N", "P", "K","Score"]],
       currentNValue: this.props.navigation.state.params.currentNValue,
       solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
@@ -48,13 +47,13 @@ export default class SecondScreen extends Component {
   }
 
   scoreHigher = () =>{
-    this.state.output = []
+    let output = []
      this.state.solutions.filter((value, ind, arr) => (ind < this.state.top) && (arr[ind][7] >= this.state.filter))
-     .forEach(value => this.state.output.push(value))
-    //  this.setState({
-    //    output: this.state.output
-    //  }) 
-  
+     .forEach(value => output.push(value))
+     //console.log(JSON.stringify(this.state.output))
+     this.setState({
+       output: output,
+     })
   }
  
 
@@ -63,17 +62,16 @@ export default class SecondScreen extends Component {
     return (
       <Container>
         <Content style={{backgroundColor: "#fff1d6"}}>
-        {/* <Header>
-          <Body>
-            <Title>Second Home</Title>
-          </Body>
-        </Header> */}
         <View style = {[styles.verticalView, styles.centerView]}>
 
-        <View style ={styles.horizontalView}>
+        <View style ={[styles.horizontalView, styles.centerView,{marginLeft: 20}]}>
+          <Text>
+            Show Top
+          </Text>
             <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '40%', textAlign: "center", marginBottom: 5 }}
               placeholder="Show Number of Scores "
+              defaultValue="10"
               keyboardType="numeric"
               multiline={false}
               onChangeText={numberOfScores => {
@@ -81,36 +79,39 @@ export default class SecondScreen extends Component {
           
               }}
             />
+            <Text>
+              scores
+            </Text>
             </View>
 
-            <View style ={styles.horizontalView}>
+            <View style ={[styles.horizontalView, styles.centerView]}>
+              <Text>
+                Show scores of
+              </Text>
             <TextInput
-              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '60%', textAlign: "center", marginBottom: 5 }}
+              style={{ borderColor: "#42bcf5", borderWidth: 1, fontSize: 20, height: 50, width: '40%', textAlign: "center", marginBottom: 5}}
               placeholder="Show Scores Higher Than "
               keyboardType="numeric"
+              defaultValue="70"
               multiline={false}
               onChangeText={score => {
                this.setState({filter: +score}, ()=>{this.scoreHigher()})
               }}
             />
+            <Text>
+              or higher
+            </Text>
             </View>
-
-            {/* <Button  onPress={() => {
-              this.scoreHigher(state.filter, state.top)
-            }}>
-              <Text> Show</Text>
-            </Button> */}
-
             </View>
 
         <View>            
             <Table borderStyle = {{borderWidth: 1}}>
-              <Rows data={state.nutrientsSuppliedLabel} style={styles.head} textStyle={styles.text} />
-              <TableWrapper>
-              <Rows data={state.gradeData} style={styles.head} flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
+            <TableWrapper>
+              <Row data= {["Fertilizer Recommendations Based on Available Grades"]} style={{height: 40, backgroundColor: "#4f92ff"}} textStyle={[styles.text, {color: "white"}]}></Row>
+              <Rows data={state.nutrientsSuppliedLabel}  style={styles.head} textStyle={styles.text} />
               </TableWrapper>
               <TableWrapper>
-                <Rows data={state.output}flexArr={[3, 1, 1,1,1,1,1]} textStyle={styles.text} />
+                 <Rows data={state.output} flexArr={[1,1,1,1,1,1]} textStyle={styles.text} style={{borderBottomWidth: 2, borderTopWidth: 2, borderBottomColor: "black", borderTopColor: "grey"}} />
               </TableWrapper>
             </Table>
 
