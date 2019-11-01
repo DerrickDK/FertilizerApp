@@ -74,7 +74,9 @@ export default class MainScreen extends Component {
 
   }//constructor 
 
-  //checkboxcomponent close
+  /**
+   * This checkBoxGrade function is a functional component that creates a 2D table of checkboxes for the grades
+   */
   checkBoxGrade = (props) => {
     const state = this.state
     const checker = (gradeBoxCondition, number) => {
@@ -133,6 +135,7 @@ export default class MainScreen extends Component {
 
     )
   }
+
   
   selectAll() {
     this.setState({
@@ -168,7 +171,11 @@ export default class MainScreen extends Component {
       grade24: false,
     })
   }
-  //Calculate values relating to pounds per square feet
+  
+
+  /**
+   * Calculate values relating to pounds per square feet
+   */
   calculateAcreValue() {
     let selectedUnits = this.state.defaultUnits.split("-");
     let poundsOrOunces = selectedUnits[0];
@@ -197,6 +204,9 @@ export default class MainScreen extends Component {
     });
   }
 
+  /**
+   * parseMe is the main function that deals with all the calculations of the application 
+   */
   parseMe = (grade) => {
     this.state.gradesParsed = [] //if this isn't here then the grades will be duplicated 
     grade.forEach(element => {
@@ -316,6 +326,8 @@ export default class MainScreen extends Component {
       return sc ? Math.min(100, Math.max(0, sc)).toFixed(0) : 0;
     } // calcSore
 
+
+
     const match = (parms, grades) => {
       // console.log(parms) //works
       let supplied = {
@@ -362,14 +374,14 @@ export default class MainScreen extends Component {
         })
       }
 
-      console.log("SOLUTION: " + JSON.stringify(this.state.solutions))
-       console.log("SOLUTION LENGTH: " + this.state.solutions.length)
+      //console.log("SOLUTION: " + JSON.stringify(this.state.solutions))
+      // console.log("SOLUTION LENGTH: " + this.state.solutions.length)
       // console.log("Supplied N: " + supplied.N) //works
       // console.log("Supplied P: " + supplied.P) // works
       // console.log("Supplied K: " + supplied.K) //works
     } // match
 
-    console.log(JSON.stringify(this.state.gradesParsed)) //works
+    //console.log(JSON.stringify(this.state.gradesParsed)) //works
 
     for (let i = 0; i < this.state.gradesParsed.length; i++) {
       match(['N'], [this.state.gradesParsed[i]]);
@@ -482,7 +494,6 @@ render() {
           <View style={[styles.horizontalView, { margin: 30 }, styles.centerView]}>
 
             <Button onPress={() => {
-              // alert(JSON.stringify(state.grades))
               this.selectAll()
             }}>
               <Text> Select All</Text>
