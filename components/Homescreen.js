@@ -9,7 +9,6 @@ import React, { Component } from "react";
 import { TextInput, StyleSheet, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from "react-native-table-component";
 import { Container, Header, Content, Form, Item, Input, ListItem, Title, Body, Icon, Text, Picker, Button, Footer, FooterTab, CheckBox } from "native-base";
-import { calculateIndividualScore, supplied, solve } from "./Functions/Helper.js";
 import { StackGestureContext } from "react-navigation-stack";
 
 
@@ -527,6 +526,7 @@ render() {
               state.grades3 = [...uniqueSet] //removes duplicates
               this.parseMe(state.grades3);
               this.props.navigation.navigate("SecondScreen", { output: state.output, solutions: state.solutions, calculatedValue: state.calculatedValue })
+            
 
             }}>
               <Text > Calculate</Text>
