@@ -526,7 +526,6 @@ render() {
               state.grades3 = [...uniqueSet] //removes duplicates
               this.parseMe(state.grades3);
               this.props.navigation.navigate("SecondScreen", { output: state.output, solutions: state.solutions, calculatedValue: state.calculatedValue })
-            
 
             }}>
               <Text > Calculate</Text>
