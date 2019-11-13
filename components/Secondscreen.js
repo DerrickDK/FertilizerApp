@@ -19,7 +19,7 @@ export default class SecondScreen extends Component {
     //   backgroundColor: "purple"
     // }
   }
-  constructor(props) {
+  constructor(props) { //second screen state gets data from home screen and stores them here for output purposes
     super(props);
     const Nutrients2 = 
       (
@@ -39,13 +39,12 @@ export default class SecondScreen extends Component {
       )
     this.state = {
       nutrientsSuppliedLabel: ["Recommendation", Nutrients1, Nutrients2, "Score"],
-      recommendations: ["↓", "N", "P", "K", "N", "P", "K","↓"],
+      recommendations: ["", "N", "P", "K", "N", "P", "K",""],
       currentNValue: this.props.navigation.state.params.currentNValue,
       solutions: this.props.navigation.state.params.solutions,
       output: this.props.navigation.state.params.output,
       filter: 70,
       top: 10, 
-
     }
     
   }
