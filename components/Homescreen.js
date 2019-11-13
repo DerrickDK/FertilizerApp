@@ -380,7 +380,6 @@ export default class MainScreen extends Component {
       // console.log("Supplied K: " + supplied.K) //works
     } // match
 
-    //console.log(JSON.stringify(this.state.gradesParsed)) //works
 
     for (let i = 0; i < this.state.gradesParsed.length; i++) {
       match(['N'], [this.state.gradesParsed[i]]);
@@ -400,6 +399,7 @@ export default class MainScreen extends Component {
 
   }//parseMe
 
+  //main render displays UI on screen
 render() {
     const state = this.state;
 
@@ -514,9 +514,7 @@ render() {
               keyboardType="default"
               multiline={true}
               onChangeText={user => {
-                // state.grades = [] //works with or without (keep)
                 state.grades = user.trim().split(/\s+/)
-                // this.setState({ grades: user.trim().split(/\s+/) }) //split creates an array for me. So userInput is my array
               }}
             />
             <Button style={{ margin: 30 }} onPress={() => {
